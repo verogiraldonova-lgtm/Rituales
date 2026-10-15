@@ -23,7 +23,7 @@ Micrositio ceremonial de nueve encuentros. Es un sitio estático (React + Vite +
 | Oración de cierre | `#/cierre` |
 | Lo que aún florece | `#/florece` |
 
-Ejemplo: `https://<usuario>.github.io/la-luz-que-permanece/#/dia/3`
+Ejemplo: `https://<usuario>.github.io/Rituales/#/dia/3`
 
 Todas las jornadas están siempre disponibles. Nada se bloquea por fecha.
 
@@ -46,18 +46,17 @@ npm run build     # verificación de tipos + compilación en dist/
 npm run preview   # vista previa de la compilación
 ```
 
-En desarrollo, abre la dirección que muestra la terminal (por ejemplo `http://localhost:5173/la-luz-que-permanece/`).
+En desarrollo, abre la dirección que muestra la terminal (por ejemplo `http://localhost:5173/Rituales/`).
 
 ## Publicación gratuita en GitHub Pages
 
 El flujo `.github/workflows/deploy.yml` compila y publica el sitio cada vez que se sube un cambio a la rama `main` (también puede ejecutarse a mano desde la pestaña **Actions**).
 
-1. Repositorio: el sitio está pensado para el repositorio `la-luz-que-permanece`. Si el repositorio tiene otro nombre, puedes renombrarlo en **Settings → General → Repository name**. No es imprescindible: el flujo usa automáticamente el nombre real del repositorio como ruta base.
-2. En **Settings → Pages**, en *Build and deployment → Source*, elige **GitHub Actions**.
-3. Sube los cambios a `main`. Cuando termine el flujo, el sitio estará en
-   `https://<usuario>.github.io/la-luz-que-permanece/`.
+1. En **Settings → Pages**, en *Build and deployment → Source*, elige **GitHub Actions**.
+2. Sube los cambios a `main`. Cuando termine el flujo, el sitio estará en
+   `https://<usuario>.github.io/Rituales/`.
 
-La ruta base por defecto (`/la-luz-que-permanece/`) está en `vite.config.ts` y puede cambiarse con la variable de entorno `BASE_PATH`.
+La ruta base por defecto (`/Rituales/`) está en `vite.config.ts` y puede cambiarse con la variable de entorno `BASE_PATH`. El flujo usa automáticamente el nombre real del repositorio, así que si algún día se renombra (por ejemplo a `la-luz-que-permanece`), la dirección se ajusta sola.
 
 El sitio incluye `noindex` para que los buscadores no lo indexen. Es un espacio íntimo que se comparte por enlace.
 
