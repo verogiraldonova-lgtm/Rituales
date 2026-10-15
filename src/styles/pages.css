@@ -1,0 +1,858 @@
+/* ───────────── Páginas: lectura, portada, invocación, jornadas, ceremonia lunar ───────────── */
+
+.santuario {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.santuario main {
+  flex: 1;
+}
+
+.pagina {
+  position: relative;
+  max-width: var(--medida);
+  margin: 0 auto;
+  padding: var(--espacio-s) var(--margen-lateral) 0;
+}
+
+/* ───────────── Encabezados ───────────── */
+
+.encabezado {
+  text-align: center;
+  padding: var(--espacio-m) 0 var(--espacio-s);
+}
+
+.encabezado-lamina {
+  max-width: 24rem;
+  margin: 0 auto var(--espacio-s);
+}
+
+.lamina {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.antetitulo {
+  margin: 0 0 0.25rem;
+  font-family: var(--fuente-ui);
+  font-weight: 500;
+  font-size: 0.82rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--oro-tinta);
+}
+
+.numeral {
+  margin: 0;
+  font-family: var(--fuente-titulo);
+  font-weight: 500;
+  font-size: 3.6rem;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  color: var(--oro);
+  text-shadow: 0 0 28px rgba(243, 227, 182, 0.9);
+}
+
+.encabezado h1 {
+  margin: 0.35rem 0 0;
+  font-family: var(--fuente-titulo);
+  font-weight: 500;
+  font-size: clamp(2.2rem, 7vw, 3rem);
+  line-height: 1.12;
+  letter-spacing: 0.01em;
+  color: var(--bosque);
+  text-wrap: balance;
+}
+
+.subtitulo {
+  margin: 0.6rem auto 0;
+  max-width: 26rem;
+  font-family: var(--fuente-lectura);
+  font-style: italic;
+  font-size: 1.3rem;
+  line-height: 1.45;
+  color: var(--tinta-suave);
+  text-wrap: balance;
+}
+
+/* ───────────── Lectura ───────────── */
+
+:where(.pagina) :where(p, li) {
+  font-size: var(--texto-lectura);
+  line-height: var(--interlineado);
+  text-wrap: pretty;
+  hyphens: manual;
+}
+
+:where(.pagina) :where(p) {
+  margin: 0 0 1.05em;
+}
+
+.titulo-seccion {
+  margin: 0 0 var(--espacio-m);
+  font-family: var(--fuente-titulo);
+  font-weight: 500;
+  font-size: 1.85rem;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--bosque);
+  text-wrap: balance;
+}
+
+.etiqueta {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin: 0 0 var(--espacio-m);
+  font-family: var(--fuente-ui) !important;
+  font-weight: 500;
+  font-size: 0.82rem !important;
+  line-height: 1.4 !important;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--oro-tinta);
+  text-align: center;
+  justify-content: center;
+}
+
+.etiqueta::before,
+.etiqueta::after {
+  content: '';
+  flex: 1;
+  max-width: 4.5rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--oro));
+}
+
+.etiqueta::after {
+  background: linear-gradient(90deg, var(--oro), transparent);
+}
+
+.capitular::first-letter {
+  float: left;
+  margin: 0.08em 0.1em 0 0;
+  font-family: var(--fuente-titulo);
+  font-weight: 600;
+  font-size: 3.55em;
+  line-height: 0.82;
+  color: var(--oro-tinta);
+}
+
+.palabras-dichas {
+  text-align: center;
+  font-family: var(--fuente-titulo);
+  font-style: italic;
+  font-size: 1.6rem !important;
+  line-height: 1.4 !important;
+  color: var(--oro-tinta);
+  margin: 1.2em 0 !important;
+}
+
+.lista-botanica {
+  list-style: none;
+  margin: 0 0 1.4em;
+  padding: 0;
+}
+
+.lista-botanica li {
+  position: relative;
+  padding-left: 2.1rem;
+  margin: 0 0 0.85em;
+}
+
+.lista-botanica li::before {
+  content: '';
+  position: absolute;
+  left: 0.1rem;
+  top: 0.45em;
+  width: 1.15rem;
+  height: 1.15rem;
+  background: var(--hoja) center / contain no-repeat;
+}
+
+.carta p:first-child {
+  font-family: var(--fuente-titulo);
+  font-style: italic;
+  font-size: 1.55rem;
+  color: var(--oro-tinta);
+}
+
+.carta p {
+  font-style: italic;
+}
+
+/* ───────────── Versos y oraciones ───────────── */
+
+.verso {
+  text-align: center;
+  margin: 0 auto 1.2em;
+}
+
+.verso-titulo {
+  margin: 0 0 1.25rem;
+  font-family: var(--fuente-titulo);
+  font-weight: 500;
+  font-size: 1.85rem;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--bosque);
+  text-wrap: balance;
+}
+
+.verso .estrofa {
+  margin: 0 auto 1.2em;
+  font-style: italic;
+  font-size: 1.25rem;
+  line-height: 1.85;
+  text-wrap: balance;
+}
+
+.verso-principal {
+  position: relative;
+  padding: 1.75rem 0;
+}
+
+.verso-principal::before,
+.verso-principal::after {
+  content: '';
+  display: block;
+  width: 5.5rem;
+  height: 0.9rem;
+  margin: 0 auto 1.25rem;
+  background:
+    radial-gradient(circle, var(--oro) 0 2.2px, transparent 2.6px) center / 0.9rem 0.9rem no-repeat,
+    linear-gradient(90deg, transparent, var(--oro) 40%, transparent 41%, transparent 59%, var(--oro) 60%, transparent) center / 100% 1px no-repeat;
+}
+
+.verso-principal::after {
+  margin: 1rem auto 0;
+}
+
+.verso-principal .estrofa {
+  font-size: 1.32rem;
+  color: var(--tinta);
+}
+
+.verso-interior {
+  margin: 1.5em auto;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--linea-suave);
+  border-bottom: 1px solid var(--linea-suave);
+}
+
+.verso-interior .estrofa {
+  margin-bottom: 0;
+  color: var(--oro-tinta);
+  font-size: 1.3rem;
+}
+
+.oracion {
+  position: relative;
+}
+
+.oracion::before {
+  content: '';
+  position: absolute;
+  inset: -1rem 0;
+  z-index: -1;
+  background: radial-gradient(ellipse at center, rgba(243, 227, 182, 0.5), transparent 70%);
+  pointer-events: none;
+}
+
+.oracion .etiqueta {
+  margin-bottom: 0.75rem;
+}
+
+/* ───────────── Portada ───────────── */
+
+.portada {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: calc(1.5rem + env(safe-area-inset-top)) var(--margen-lateral) calc(2.5rem + env(safe-area-inset-bottom));
+}
+
+.portada-luz {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 45% at 55% 22%, rgba(250, 236, 196, 0.85), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 15% 85%, rgba(164, 174, 152, 0.18), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 90% 90%, rgba(217, 199, 158, 0.25), transparent 70%);
+}
+
+.portada-interior {
+  position: relative;
+  width: 100%;
+  max-width: 38rem;
+  text-align: center;
+  animation: aparecer-pagina 1600ms var(--curva) both;
+}
+
+.portada-lamina {
+  max-width: 30rem;
+  margin: 0 auto -0.5rem;
+}
+
+.portada-titulo {
+  margin: 0;
+  font-family: var(--fuente-titulo);
+  font-weight: 500;
+  font-size: clamp(2.05rem, 9vw, 3.7rem);
+  line-height: 1.1;
+  letter-spacing: 0.14em;
+  color: var(--bosque);
+  text-shadow: 0 0 40px rgba(250, 236, 196, 0.9);
+  text-wrap: balance;
+}
+
+.portada-subtitulo {
+  margin: 0.9rem auto 0;
+  max-width: 24rem;
+  font-family: var(--fuente-lectura);
+  font-style: italic;
+  font-size: 1.3rem;
+  line-height: 1.45;
+  color: var(--tinta-suave);
+  text-wrap: balance;
+}
+
+.portada-filete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 1.6rem auto;
+}
+
+.portada-filete span {
+  width: 3.5rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--oro));
+}
+
+.portada-filete span:last-child {
+  background: linear-gradient(90deg, var(--oro), transparent);
+}
+
+.portada-dedicatoria {
+  margin: 0 0 2.2rem;
+  font-family: var(--fuente-titulo);
+  font-size: 1.35rem;
+  line-height: 1.55;
+  color: var(--tinta);
+}
+
+.portada-dedicatoria span {
+  display: block;
+}
+
+.portada-dedicatoria .portada-lugar {
+  margin-top: 0.6rem;
+  font-family: var(--fuente-ui);
+  font-size: 0.85rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--oro-tinta);
+}
+
+.boton-entrar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  padding: 0.9rem 2.4rem;
+  border: 1px solid var(--oro);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #fffdf7, #f4ecd9);
+  box-shadow:
+    0 0 0 5px rgba(250, 249, 244, 0.6),
+    0 0 0 6px rgba(182, 155, 101, 0.3),
+    0 10px 40px rgba(217, 199, 158, 0.55);
+  font-family: var(--fuente-ui);
+  font-weight: 500;
+  font-size: 0.98rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--bosque);
+  text-decoration: none;
+  transition: box-shadow 600ms var(--curva);
+}
+
+.boton-entrar:hover {
+  color: var(--bosque);
+  box-shadow:
+    0 0 0 5px rgba(250, 249, 244, 0.8),
+    0 0 0 6px rgba(182, 155, 101, 0.5),
+    0 10px 56px rgba(217, 199, 158, 0.95);
+}
+
+.portada-frase {
+  margin: 1.6rem auto 0;
+  max-width: 22rem;
+  font-family: var(--fuente-lectura);
+  font-style: italic;
+  font-size: 1.15rem;
+  line-height: 1.5;
+  color: var(--tinta-suave);
+}
+
+/* ───────────── Inicio: el recorrido ───────────── */
+
+.recorrido-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: none;
+}
+
+.recorrido-lista a {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  min-height: 48px;
+  padding: 0.65rem 0.25rem;
+  border-bottom: 1px solid var(--linea-suave);
+  font-family: var(--fuente-titulo);
+  font-size: 1.35rem;
+  font-weight: 500;
+  line-height: 1.3;
+  text-decoration: none;
+  color: var(--bosque);
+}
+
+.recorrido-lista a:hover {
+  color: var(--oro-tinta);
+  background: linear-gradient(90deg, rgba(243, 227, 182, 0.4), transparent);
+}
+
+.recorrido-romano {
+  flex: none;
+  width: 2.8rem;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--oro-tinta);
+}
+
+.recorrido-dia a {
+  padding-left: 0.75rem;
+}
+
+.recorrido .marca-leida {
+  font-size: 1rem;
+}
+
+/* ───────────── Invocación: página iluminada ───────────── */
+
+.folio {
+  max-width: 40rem;
+}
+
+.folio-marco {
+  position: relative;
+  margin: var(--espacio-m) 0 0;
+  padding: var(--espacio-l) clamp(0.9rem, 5vw, 3rem);
+  border: 1px solid var(--linea);
+  outline: 1px solid var(--linea-suave);
+  outline-offset: 6px;
+  background-color: rgba(250, 249, 244, 0.75);
+  background-image:
+    radial-gradient(ellipse 80% 30% at 50% 0%, rgba(243, 227, 182, 0.65), transparent 70%),
+    radial-gradient(ellipse 80% 40% at 50% 100%, rgba(243, 227, 182, 0.55), transparent 70%),
+    var(--fibras);
+}
+
+.esquina {
+  position: absolute;
+  width: 3.4rem;
+  height: 3.4rem;
+  background: var(--esquina) center / contain no-repeat;
+  pointer-events: none;
+}
+
+.esquina-si {
+  top: 0.4rem;
+  left: 0.4rem;
+}
+
+.esquina-sd {
+  top: 0.4rem;
+  right: 0.4rem;
+  transform: scaleX(-1);
+}
+
+.esquina-ii {
+  bottom: 0.4rem;
+  left: 0.4rem;
+  transform: scaleY(-1);
+}
+
+.esquina-id {
+  bottom: 0.4rem;
+  right: 0.4rem;
+  transform: scale(-1, -1);
+}
+
+.folio-encabezado {
+  padding-top: 0;
+}
+
+.medallon {
+  display: block;
+  width: 11rem;
+  height: auto;
+  margin: 0 auto 0.5rem;
+  overflow: visible;
+}
+
+.medallon-numeral {
+  font-family: var(--fuente-titulo);
+  font-weight: 500;
+  font-size: 54px;
+  letter-spacing: 4px;
+  fill: #8c7440;
+}
+
+.verso-iluminado {
+  text-align: left;
+  max-width: 25rem;
+  margin: var(--espacio-m) auto 0;
+}
+
+.verso-iluminado .estrofa {
+  font-size: 1.28rem;
+  line-height: 1.8;
+  margin: 0 0 1.4em;
+  text-wrap: wrap;
+}
+
+.verso-iluminado .estrofa:first-child::first-letter {
+  float: left;
+  margin: 0.04em 0.16em 0 0;
+  padding: 0.12em 0.16em 0.04em;
+  font-family: var(--fuente-titulo);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 2.75em;
+  line-height: 0.8;
+  color: var(--oro-tinta);
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255, 250, 235, 0.95), rgba(243, 227, 182, 0.85));
+  border: 1px solid var(--oro);
+  box-shadow: inset 0 0 0 3px rgba(250, 249, 244, 0.9), inset 0 0 0 4px rgba(182, 155, 101, 0.4);
+}
+
+.verso-iluminado .estrofa + .estrofa::before {
+  content: '';
+  display: block;
+  width: 3.5rem;
+  height: 0.7rem;
+  margin: 0 0 1.1em 2.5rem;
+  background:
+    radial-gradient(circle, var(--oro) 0 1.8px, transparent 2.2px) center / 0.7rem 0.7rem no-repeat,
+    linear-gradient(90deg, transparent, var(--oro) 35%, transparent 42%, transparent 58%, var(--oro) 65%, transparent) center / 100% 1px no-repeat;
+}
+
+.verso-iluminado .estrofa:last-child {
+  font-family: var(--fuente-titulo);
+  font-size: 1.5rem;
+  color: var(--oro-tinta);
+}
+
+.folio-transicion {
+  margin: var(--espacio-l) 0 var(--espacio-m);
+}
+
+.nueve-luces ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  align-items: end;
+  gap: 0.15rem;
+  position: relative;
+}
+
+.nueve-luces ol::before {
+  content: '';
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 38%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(182, 155, 101, 0.15), var(--oro));
+}
+
+.nueve-luces a {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  min-height: 48px;
+  padding: 0.25rem 0;
+  text-decoration: none;
+  color: var(--oro-tinta);
+  border-radius: 0.5rem;
+}
+
+.nueve-luces svg {
+  width: 100%;
+  max-width: 2.6rem;
+  height: auto;
+  overflow: visible;
+}
+
+.luz-llena svg {
+  max-width: 3.6rem;
+}
+
+.luz-romano {
+  font-family: var(--fuente-titulo);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+}
+
+.luz-llena .luz-romano {
+  font-size: 1.1rem;
+}
+
+.nueve-luces a:hover svg {
+  filter: drop-shadow(0 0 6px rgba(217, 199, 158, 0.9));
+}
+
+.folio-cierre {
+  text-align: center;
+}
+
+/* ───────────── Jornadas ───────────── */
+
+.encabezado-jornada .encabezado-lamina {
+  max-width: 22rem;
+}
+
+.momento {
+  position: relative;
+}
+
+.momento-apertura > p,
+.momento-cierre > p {
+  text-align: center;
+  font-style: italic;
+  color: var(--tinta-suave);
+}
+
+.gesto .titulo-seccion {
+  font-size: 1.65rem;
+}
+
+/* ───────────── Día IX · Ceremonia lunar ───────────── */
+
+.ceremonia-lunar {
+  --luz: 0.3;
+}
+
+.claridad-lunar {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: var(--luz);
+  background:
+    radial-gradient(ellipse 80% 55% at 50% 0%, rgba(246, 236, 207, 0.95), transparent 70%),
+    radial-gradient(ellipse 120% 60% at 50% 110%, rgba(222, 228, 222, 0.7), transparent 70%);
+  transition: opacity 600ms linear;
+}
+
+.lamina-luna .luna-resplandor {
+  opacity: calc(0.35 + var(--luz) * 0.65);
+  transition: opacity 600ms linear;
+}
+
+.encabezado-lunar .encabezado-lamina {
+  max-width: 26rem;
+}
+
+.encabezado-lunar .numeral {
+  color: #a88d58;
+  text-shadow:
+    0 0 24px rgba(250, 240, 210, 1),
+    0 0 60px rgba(243, 227, 182, 0.9);
+}
+
+.bendicion .verso-principal .estrofa {
+  font-size: 1.38rem;
+}
+
+.titulo-transformacion {
+  margin-bottom: var(--espacio-l);
+}
+
+.momento-lunar {
+  position: relative;
+  margin: 0 0 var(--espacio-l);
+  padding: 1.25rem clamp(1rem, 5vw, 2rem) 1.5rem;
+  border: 1px solid var(--linea-suave);
+  border-radius: 12rem 12rem 0.75rem 0.75rem / 7rem 7rem 0.75rem 0.75rem;
+}
+
+.momento-lunar h3 {
+  margin: 0 0 1.25rem;
+  font-family: var(--fuente-titulo);
+  font-weight: 500;
+  font-size: 1.65rem;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--bosque);
+}
+
+.momento-icono {
+  display: block;
+  width: 7.5rem;
+  height: auto;
+  margin: 0.25rem auto 0.25rem;
+  overflow: visible;
+}
+
+.momento-ofrenda {
+  background: linear-gradient(180deg, rgba(164, 174, 152, 0.18), rgba(250, 249, 244, 0.4) 60%);
+  border-color: rgba(164, 174, 152, 0.6);
+}
+
+.momento-fuego {
+  background: linear-gradient(180deg, rgba(242, 196, 109, 0.16), rgba(250, 249, 244, 0.4) 45%, rgba(201, 211, 203, 0.32));
+  border-color: rgba(182, 155, 101, 0.45);
+}
+
+.momento-luna {
+  background:
+    radial-gradient(ellipse 90% 40% at 50% 0%, rgba(255, 252, 240, 0.95), transparent 70%),
+    linear-gradient(180deg, rgba(241, 227, 188, 0.35), rgba(250, 249, 244, 0.5));
+  border-color: var(--oro-claro);
+  box-shadow: 0 0 50px rgba(243, 227, 182, 0.55);
+}
+
+.ultima-luz {
+  text-align: center;
+}
+
+.ultima-luz > p:nth-last-of-type(-n + 3) {
+  font-family: var(--fuente-titulo);
+  font-size: 1.45rem;
+  color: var(--bosque);
+}
+
+.ultima-luz > p:last-of-type {
+  font-style: italic;
+  font-size: 1.6rem;
+  color: var(--oro-tinta);
+}
+
+/* ───────────── Lo que aún florece ───────────── */
+
+.florece .encabezado h1 {
+  letter-spacing: 0.12em;
+  font-size: clamp(1.9rem, 7vw, 2.7rem);
+}
+
+.florece-texto {
+  text-align: center;
+}
+
+.florece-texto > p {
+  font-style: italic;
+}
+
+.firma {
+  margin-top: var(--espacio-m) !important;
+  font-family: var(--fuente-titulo);
+  font-size: 1.35rem !important;
+  color: var(--oro-tinta);
+}
+
+.diario textarea {
+  display: block;
+  width: 100%;
+  min-height: 16rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--arena-honda);
+  border-radius: 0.75rem;
+  background-color: var(--orquidea);
+  background-image: repeating-linear-gradient(
+    180deg,
+    transparent 0,
+    transparent calc(1.8em - 1px),
+    rgba(182, 155, 101, 0.28) calc(1.8em - 1px),
+    rgba(182, 155, 101, 0.28) 1.8em
+  );
+  background-attachment: local;
+  background-position: 0 0.6rem;
+  font-family: var(--fuente-lectura);
+  font-size: 1.2rem;
+  line-height: 1.8em;
+  color: var(--tinta);
+  resize: vertical;
+}
+
+.diario textarea:focus-visible {
+  outline: 2px solid var(--oro-tinta);
+  outline-offset: 2px;
+}
+
+.diario .nota-discreta {
+  margin: 0.9rem 0 0;
+  font-size: 0.88rem;
+}
+
+.diario-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: var(--espacio-m);
+}
+
+.diario-estado {
+  min-height: 1.5em;
+  margin: 0.9rem 0 0 !important;
+  text-align: center;
+  font-family: var(--fuente-ui);
+  font-size: 0.92rem !important;
+  color: var(--bosque);
+}
+
+/* ───────────── Pantallas amplias ───────────── */
+
+@media (min-width: 48rem) {
+  .encabezado {
+    padding-top: var(--espacio-l);
+  }
+
+  .encabezado-lamina {
+    max-width: 28rem;
+  }
+
+  .encabezado-lunar .encabezado-lamina {
+    max-width: 32rem;
+  }
+}
+
+.portada-frase {
+  text-wrap: balance;
+}
+
+.encabezado + .momento,
+.encabezado + section {
+  margin-top: var(--espacio-m);
+}

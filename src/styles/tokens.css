@@ -1,0 +1,52 @@
+/* ───────────── Tokens de diseño · La luz que permanece ───────────── */
+
+:root {
+  /* Paleta principal */
+  --marfil: #f7f3ea;
+  --salvia: #a4ae98;
+  --bosque: #465b49;
+  --oro: #b69b65;
+  --arena: #ddd3bf;
+  --orquidea: #faf9f4;
+
+  /* Derivados (contraste suficiente para texto) */
+  --tinta: #2e3a30; /* lectura: contraste ≈ 11:1 sobre marfil */
+  --tinta-suave: #4b574c; /* contraste ≈ 7:1 */
+  --oro-tinta: #76602f; /* oro para texto: contraste ≈ 5.6:1 */
+  --oro-claro: #d9c79e;
+  --oro-luz: #f3e3b6;
+  --arena-honda: #c9bb9e;
+  --amatista: #7d6b98;
+  --linea: rgba(182, 155, 101, 0.45);
+  --linea-suave: rgba(182, 155, 101, 0.25);
+
+  /* Tipografía */
+  --fuente-titulo: 'Cormorant Garamond', 'Cormorant', Garamond, Georgia, serif;
+  --fuente-lectura: 'EB Garamond', Garamond, Georgia, 'Times New Roman', serif;
+  --fuente-ui: 'Jost', 'Avenir Next', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* Tamaño de letra elegido por la lectora (lo ajusta la aplicación) */
+  --escala-texto: 1;
+
+  --texto-lectura: 1.2rem;
+  --interlineado: 1.78;
+  --medida: 36rem;
+  --margen-lateral: clamp(1.25rem, 5vw, 2.5rem);
+
+  /* Ritmo */
+  --espacio-xs: 0.5rem;
+  --espacio-s: 1rem;
+  --espacio-m: 1.75rem;
+  --espacio-l: 3rem;
+  --espacio-xl: 5rem;
+
+  /* Movimiento */
+  --curva: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --lento: 900ms;
+
+  /* Textura de papel (ruido SVG, local) */
+  --papel: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .42 0 0 0 0 .36 0 0 0 0 .24 0 0 0 .075 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --fibras: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .05' numOctaves='2' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .48 0 0 0 0 .32 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  --hoja: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 20 Q5 7 21 3 Q18 17 3 20Z' fill='%23A4AE98' stroke='%23465B49' stroke-width='.8'/%3E%3Cpath d='M4 19 Q11 12 18 6' stroke='%23F7F3EA' stroke-width='.8' fill='none'/%3E%3C/svg%3E");
+  --esquina: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='%23B69B65' stroke-width='1' stroke-linecap='round'%3E%3Cpath d='M4 56 V14 Q4 4 14 4 H56'/%3E%3Cpath d='M10 56 V18 Q10 10 18 10 H56' opacity='.5'/%3E%3Cpath d='M14 22 Q22 14 30 18 M22 14 Q14 22 18 30'/%3E%3C/g%3E%3Cg fill='%23A4AE98'%3E%3Cpath d='M18 18 q8 -6 14 -2 q-6 6 -14 2Z'/%3E%3Cpath d='M18 18 q-6 8 -2 14 q6 -6 2 -14Z'/%3E%3C/g%3E%3Ccircle cx='18' cy='18' r='2.4' fill='%23B69B65'/%3E%3C/svg%3E");
+}
