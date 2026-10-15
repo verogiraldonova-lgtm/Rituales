@@ -779,6 +779,11 @@ const PAINTED: Partial<Record<IllustrationKey, PaintingKey>> = {
   memoria: 'dia-2',
   manos: 'dia-3',
   casa: 'dia-4',
+  raices: 'dia-5',
+  alegria: 'dia-6',
+  mujer: 'dia-7',
+  jardin: 'dia-8',
+  luna: 'dia-9',
 }
 
 export function DayIllustration({ name }: { name: IllustrationKey }) {

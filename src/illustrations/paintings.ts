@@ -20,6 +20,21 @@ import iconoDia1 from '../assets/icono-dia-1.webp'
 import iconoDia2 from '../assets/icono-dia-2.webp'
 import iconoDia3 from '../assets/icono-dia-3.webp'
 import iconoDia4 from '../assets/icono-dia-4.webp'
+import dia5 from '../assets/dia-5.webp'
+import dia5Small from '../assets/dia-5-800.webp'
+import iconoDia5 from '../assets/icono-dia-5.webp'
+import dia6 from '../assets/dia-6.webp'
+import dia6Small from '../assets/dia-6-800.webp'
+import iconoDia6 from '../assets/icono-dia-6.webp'
+import dia7 from '../assets/dia-7.webp'
+import dia7Small from '../assets/dia-7-800.webp'
+import iconoDia7 from '../assets/icono-dia-7.webp'
+import dia8 from '../assets/dia-8.webp'
+import dia8Small from '../assets/dia-8-800.webp'
+import iconoDia8 from '../assets/icono-dia-8.webp'
+import dia9 from '../assets/dia-9.webp'
+import dia9Small from '../assets/dia-9-800.webp'
+import iconoDia9 from '../assets/icono-dia-9.webp'
 
 export interface PaintingData {
   src: string
@@ -79,6 +94,46 @@ export const paintings = {
     smallWidth: 800,
     alt: 'Un cuenco con agua y flores de manzanilla junto a una ventana abierta al paisaje, con la orquídea, la pirámide y el velón.',
   },
+  'dia-5': {
+    src: dia5,
+    small: dia5Small,
+    width: 1376,
+    height: 1143,
+    smallWidth: 800,
+    alt: 'Una planta de romero florecido con sus raíces doradas a la vista bajo la tierra, entre orquídeas blancas y cuarzos, bajo un arco de lunas.',
+  },
+  'dia-6': {
+    src: dia6,
+    small: dia6Small,
+    width: 1376,
+    height: 1143,
+    smallWidth: 800,
+    alt: 'Una taza de infusión de manzanilla humeante junto a un frasco con flores de manzanilla, una amatista y romero, frente a una ventana con luz de mañana.',
+  },
+  'dia-7': {
+    src: dia7,
+    small: dia7Small,
+    width: 1376,
+    height: 1143,
+    smallWidth: 800,
+    alt: 'Una amatista que brilla desde adentro sobre una piedra, entre romero y orquídeas blancas, con un cuenco de agua al pie y un arco de estrellas.',
+  },
+  'dia-8': {
+    src: dia8,
+    small: dia8Small,
+    width: 1376,
+    height: 1143,
+    smallWidth: 800,
+    alt: 'Una orquídea blanca viva en su maceta junto al velón, la pirámide, las amatistas y el cuenco con agua, rodeada de romero.',
+  },
+  'dia-9': {
+    src: dia9,
+    small: dia9Small,
+    width: 1376,
+    height: 1143,
+    smallWidth: 800,
+    alt: 'La luna llena sobre la pirámide, el velón encendido, el cuenco con agua que refleja la luna, romero florecido y una amatista sobre el altar.',
+  },
 } satisfies Record<string, PaintingData>
 
 export type PaintingKey = keyof typeof paintings
@@ -91,4 +146,9 @@ export const stationImages: Partial<Record<string, string>> = {
   'dia-2': iconoDia2,
   'dia-3': iconoDia3,
   'dia-4': iconoDia4,
+  'dia-5': iconoDia5,
+  'dia-6': iconoDia6,
+  'dia-7': iconoDia7,
+  'dia-8': iconoDia8,
+  'dia-9': iconoDia9,
 }

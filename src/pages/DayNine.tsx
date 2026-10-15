@@ -4,7 +4,8 @@ import { Blocks, Verse } from '../components/Blocks'
 import { Candle } from '../components/Candle'
 import { DayNav, Disclosure, Divider, Fold, Pager, ReadToggle } from '../components/Chrome'
 import { MomentArt } from '../illustrations/emblems'
-import { Luna, OrchidDivider } from '../illustrations/scenes'
+import { OrchidDivider } from '../illustrations/scenes'
+import { Painting } from '../components/Painting'
 import { dayLabel, href } from '../routes'
 import { OpeningInvitation } from './Day'
 import { PageHero } from './PageHero'
@@ -95,7 +96,7 @@ export function DayNine() {
         numeral={d.roman}
         title={d.title}
         subtitle={d.subtitle}
-        illustration={<Luna className="lamina-luna" />}
+        illustration={<Painting name="dia-9" eager />}
         className="encabezado-jornada encabezado-lunar"
       />
 
