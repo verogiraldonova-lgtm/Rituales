@@ -9,23 +9,27 @@ import { days, finalDay } from './content/novena'
 export type Route =
   | { name: 'portada' }
   | { name: 'inicio' }
+  | { name: 'jardin' }
   | { name: 'altar' }
   | { name: 'apertura' }
   | { name: 'invocacion' }
   | { name: 'dia'; day: number }
   | { name: 'cierre' }
   | { name: 'florece' }
+  | { name: 'despedida' }
   | { name: 'no-encontrada' }
 
 export const href = {
   portada: '#/',
   inicio: '#/inicio',
+  jardin: '#/jardin',
   altar: '#/altar',
   apertura: '#/apertura',
   invocacion: '#/invocacion',
   dia: (n: number) => `#/dia/${n}`,
   cierre: '#/cierre',
   florece: '#/florece',
+  despedida: '#/despedida',
 }
 
 export function parseHash(hash: string): Route {
@@ -40,6 +44,10 @@ export function parseHash(hash: string): Route {
   switch (path) {
     case '/inicio':
       return { name: 'inicio' }
+    case '/jardin':
+      return { name: 'jardin' }
+    case '/despedida':
+      return { name: 'despedida' }
     case '/altar':
       return { name: 'altar' }
     case '/apertura':
@@ -86,6 +94,7 @@ export interface NavEntry {
 /** Orden completo del recorrido, tal como aparece en el menú. */
 export const navEntries: NavEntry[] = [
   { label: 'Inicio', href: href.inicio, key: 'inicio' },
+  { label: 'El jardín', href: href.jardin, key: 'jardin' },
   { label: 'Preparación del altar', href: href.altar, key: 'altar' },
   { label: 'Oración de apertura', href: href.apertura, key: 'apertura' },
   { label: 'Invocación de las nueve luces', href: href.invocacion, key: 'invocacion' },
@@ -101,6 +110,8 @@ export function pageTitle(route: Route): string {
       return `${base} · Novena botánica`
     case 'dia':
       return `${dayLabel(route.day)} · ${base}`
+    case 'despedida':
+      return `Despedida · ${base}`
     case 'no-encontrada':
       return base
     default: {

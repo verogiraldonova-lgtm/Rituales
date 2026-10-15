@@ -7,17 +7,21 @@ import { C, r2 } from './palette'
 import {
   AmethystCluster,
   Chamomile,
+  ChamomileLeaf,
   FullMoon,
   Glow,
   Leaf,
   MoonPhase,
   Orchid,
-  OrchidBud,
+  OrchidLeaf,
+  OrchidSpray,
+  OpenHand,
   PillarCandle,
   Pyramid,
   Rosemary,
   Roots,
   SmallFlame,
+  smoothPath,
   Sparkle,
   useSvgId,
   WaterBowl,
@@ -97,7 +101,6 @@ export function InvocationCard() {
 /* ─────────────── Íconos de las estaciones del jardín ─────────────── */
 
 export type StationKind =
-  | 'altar'
   | 'apertura'
   | 'invocacion'
   | 'dia-1'
@@ -111,93 +114,200 @@ export type StationKind =
   | 'dia-9'
   | 'cierre'
   | 'florece'
+  | 'despedida'
+
+/** Hoyo del jardín: tierra húmeda con un borde de hierbas. */
+function GardenBed({ seed = 1 }: { seed?: number }) {
+  const rim = smoothPath([
+    [-29, 2],
+    [-26, -16],
+    [-12, -28],
+    [6, -29],
+    [22, -22],
+    [30, -6],
+    [28, 12],
+    [16, 26],
+    [-4, 29],
+    [-20, 23],
+    [-29, 2],
+  ])
+  return (
+    <g>
+      <path d={rim} fill="#FBF6EA" filter="url(#acuarela)" />
+      <path d={rim} fill="none" stroke="#C9B994" strokeWidth={0.5} opacity={0.8} />
+      <ellipse cx={0} cy={19} rx={21} ry={5.5} fill="#B9A27A" opacity={0.55} filter="url(#acuarela)" />
+      <path d="M-20 19 Q0 15 20 19" fill="none" stroke="#7E6A4A" strokeWidth={0.45} opacity={0.7} />
+      <g stroke="#6E8A68" strokeWidth={0.55} strokeLinecap="round" fill="none">
+        {[-22, -17, 15, 20].map((gx, i) => (
+          <path key={gx} d={`M${gx} 20 q${i % 2 ? 1 : -1} -4 ${i % 2 ? 3 : -2} -6 M${gx + 1} 20 q0 -3 1 -5`} />
+        ))}
+      </g>
+      <Leaf x={-24} y={14} length={7} width={2.4} angle={-140 + seed} tone={2} seed={seed} />
+      <Leaf x={24} y={13} length={6} width={2.2} angle={-40 - seed} tone={4} seed={seed + 3} />
+    </g>
+  )
+}
 
 function StationArt({ kind }: { kind: StationKind }): ReactNode {
   switch (kind) {
-    case 'altar':
+    case 'apertura':
       return (
         <>
-          <Pyramid x={0} y={14} w={15} h={32} />
-          <Sparkle x={0} y={-19} s={3} />
+          <Glow x={0} y={-6} r={22} color={C.flame} opacity={0.4} />
+          <PillarCandle x={0} y={19} w={11} h={24} />
+          <Rosemary x={-18} y={20} length={30} angle={-12} bend={-3} leaves={12} leafLength={7} seed={2} />
         </>
       )
-    case 'apertura':
-      return <PillarCandle x={0} y={20} w={11} h={24} />
     case 'invocacion':
       return (
         <>
-          <MoonPhase x={-11} y={-14} r={3.4} k={0.3} lit="#EAD9A6" outline={C.gold} />
-          <FullMoon x={0} y={-15} r={4.4} />
+          <Glow x={0} y={-4} r={22} color="#F3E3B6" opacity={0.9} />
+          <MoonPhase x={-12} y={-12} r={3.6} k={0.3} lit="#EAD9A6" outline={C.gold} />
+          <FullMoon x={0} y={-14} r={5} />
           <g transform="scale(-1 1)">
-            <MoonPhase x={-11} y={-14} r={3.4} k={0.3} lit="#EAD9A6" outline={C.gold} />
+            <MoonPhase x={-12} y={-12} r={3.6} k={0.3} lit="#EAD9A6" outline={C.gold} />
           </g>
-          <path d="M0 -6 L1.6 4 L12 6 L1.6 8 L0 18 L-1.6 8 L-12 6 L-1.6 4Z" fill={C.gold} />
+          <Sparkle x={0} y={4} s={6} />
+          <Sparkle x={-12} y={8} s={2.4} />
+          <Sparkle x={12} y={6} s={2.8} />
+          <Rosemary x={-16} y={19} length={32} angle={-8} bend={-3} leaves={12} leafLength={6} seed={4} />
         </>
       )
     case 'dia-1':
       return (
         <>
-          <path d="M-10 18 L-10 -2 A10 10 0 0 1 10 -2 L10 18Z" fill="#F6E7C2" stroke={C.goldInk} strokeWidth={0.6} />
-          <Rosemary x={-15} y={20} length={34} angle={-80} bend={-4} leaves={12} leafLength={8} seed={1} />
-          <Rosemary x={15} y={20} length={34} angle={-100} bend={4} leaves={12} leafLength={8} seed={2} />
+          <Glow x={0} y={4} r={18} opacity={0.8} />
+          <path d="M-9 19 L-9 0 A9 9 0 0 1 9 0 L9 19Z" fill="#F8EBC8" />
+          <path d="M-9 19 L-9 0 A9 9 0 0 1 9 0 L9 19" fill="none" stroke={C.goldInk} strokeWidth={0.55} />
+          <Sparkle x={0} y={4} s={2.6} />
+          <Rosemary x={-14} y={20} length={36} angle={-78} bend={-4} leaves={14} leafLength={8} seed={1} />
+          <Rosemary x={14} y={20} length={36} angle={-102} bend={4} leaves={14} leafLength={8} seed={2} />
         </>
       )
     case 'dia-2':
       return (
         <>
-          <Rosemary x={-18} y={14} length={40} angle={-30} bend={-4} leaves={14} leafLength={9} seed={3} />
-          <g transform="translate(-2 4) rotate(-30)">
-            <rect x={-6} y={-4} width={12} height={8} rx={3.6} fill="#FBF8EF" stroke={INK_SOFT} strokeWidth={0.4} />
-            <path d="M-2 -4.4 L0 4.4" stroke="#8E6FB5" strokeWidth={0.7} />
+          <g transform="rotate(-8)">
+            <path d="M-12 -14 L12 -14 L12 6 Q10 10 6 9 L-12 9Z" fill="#FBF8EF" stroke={INK_SOFT} strokeWidth={0.4} />
+            <path d="M-9 -9 q4 -1.5 8 0 t8 0 M-9 -5 q4 -1.5 8 0 t6 0 M-9 -1 q4 -1.5 8 0 t8 0" fill="none" stroke="#8E6FB5" strokeWidth={0.35} />
+          </g>
+          <Rosemary x={-20} y={17} length={42} angle={-28} bend={-4} leaves={16} leafLength={8} seed={3} />
+          <g transform="translate(-5 6) rotate(-28)">
+            <rect x={-4} y={-3} width={8} height={6} rx={2.6} fill="#FBF8EF" stroke={INK_SOFT} strokeWidth={0.35} />
+            <path d="M-1 -3.3 L0.6 3.3" stroke="#8E6FB5" strokeWidth={0.6} />
           </g>
         </>
       )
     case 'dia-3':
-      return <AmethystCluster x={0} y={10} scale={0.45} />
+      return (
+        <>
+          <Glow x={0} y={2} r={20} color={C.amethystLight} opacity={0.8} />
+          <OpenHand x={8} y={21} scale={0.36} />
+          <OpenHand x={-8} y={21} scale={0.36} mirror />
+          <AmethystCluster x={0} y={8} scale={0.26} />
+        </>
+      )
     case 'dia-4':
-      return <WaterBowl x={0} y={0} w={17} />
+      return (
+        <>
+          <polygon points="4,-24 14,-24 2,14 -14,14" fill={C.goldLight} opacity={0.35} filter="url(#acuarela)" />
+          <WaterBowl x={-2} y={4} w={15} />
+          <Leaf x={14} y={16} length={9} width={3} angle={-50} tone={1} seed={6} />
+          <Sparkle x={0} y={4} s={2.4} fill="#FFFFFF" />
+        </>
+      )
     case 'dia-5':
       return (
         <>
-          <line x1={-20} y1={4} x2={20} y2={4} stroke={INK_SOFT} strokeWidth={0.4} />
-          <Roots x={0} y={4} length={7} depth={3} seed={4} spread={34} />
-          <Rosemary x={0} y={4} length={22} angle={-90} bend={-2} leaves={10} leafLength={7} seed={5} />
-          <Rosemary x={0} y={4} length={18} angle={-125} bend={-2} leaves={8} leafLength={6} seed={6} />
-          <Rosemary x={0} y={4} length={18} angle={-55} bend={2} leaves={8} leafLength={6} seed={7} />
+          <Roots x={0} y={16} length={5} depth={3} seed={4} spread={34} />
+          <Rosemary x={0} y={16} length={30} angle={-90} bend={-2} leaves={14} leafLength={7} seed={5} />
+          <Rosemary x={0} y={16} length={22} angle={-124} bend={-2} leaves={10} leafLength={6} seed={6} />
+          <Rosemary x={0} y={16} length={22} angle={-56} bend={2} leaves={10} leafLength={6} seed={7} />
         </>
       )
     case 'dia-6':
-      return <Chamomile x={0} y={0} size={12} seed={8} tilt={0.85} />
+      return (
+        <>
+          <Glow x={0} y={-6} r={22} color="#F6DFA6" opacity={0.7} />
+          <g fill="none" stroke={INK_SOFT} strokeWidth={0.45}>
+            <path d="M-2 19 Q-6 4 -9 -6" />
+            <path d="M0 19 Q2 4 6 -10" />
+            <path d="M2 19 Q8 10 13 4" />
+          </g>
+          <ChamomileLeaf x={0} y={17} length={12} angle={-150} seed={2} />
+          <Chamomile x={-9} y={-7} size={7.5} seed={3} tilt={0.8} petals={18} />
+          <Chamomile x={6} y={-11} size={8.5} seed={5} tilt={0.85} petals={18} />
+          <Chamomile x={13} y={3} size={6} seed={7} tilt={0.7} petals={16} />
+        </>
+      )
     case 'dia-7':
       return (
         <>
-          <Glow x={0} y={-2} r={22} color={C.amethystLight} opacity={0.9} />
-          <circle r={16} fill="none" stroke={C.gold} strokeWidth={0.4} strokeDasharray="1 2.4" />
-          <AmethystCluster x={0} y={9} scale={0.4} />
+          <Glow x={0} y={-2} r={24} color={C.amethystLight} opacity={0.95} />
+          <Glow x={0} y={-2} r={12} color="#FFF6DE" opacity={0.95} />
+          <AmethystCluster x={0} y={14} scale={0.4} />
+          <Sparkle x={-14} y={-14} s={2.6} />
+          <Sparkle x={15} y={-8} s={2.2} />
+          <Sparkle x={2} y={-22} s={3} />
         </>
       )
     case 'dia-8':
-      return <Orchid x={0} y={0} size={0.4} seed={2} />
+      return (
+        <>
+          <OrchidLeaf x={0} y={18} length={22} width={7} angle={-165} seed={2} />
+          <OrchidLeaf x={0} y={18} length={20} width={7} angle={-18} seed={3} />
+          <OrchidSpray
+            points={[
+              [0, 17],
+              [-2, 0],
+              [4, -14],
+              [14, -20],
+            ]}
+            flowers={[
+              { at: [-3, -2], size: 0.24, rotate: -8, seed: 2 },
+              { at: [6, -15], size: 0.22, rotate: 10, seed: 3 },
+            ]}
+            buds={[{ at: [14, -20], size: 0.35, rotate: 70 }]}
+          />
+        </>
+      )
     case 'dia-9':
       return (
         <>
-          <Glow x={0} y={0} r={22} color="#F1E3BC" opacity={0.95} />
-          <FullMoon x={0} y={0} r={14} />
+          <Glow x={0} y={-8} r={22} color="#F1E3BC" opacity={0.95} />
+          <FullMoon x={0} y={-8} r={11} />
+          <SmallFlame x={-12} y={18} s={0.3} />
+          <Rosemary x={-4} y={19} length={26} angle={-14} bend={-3} leaves={12} leafLength={6} seed={9} />
+          <Sparkle x={15} y={-18} s={2.2} />
         </>
       )
     case 'cierre':
       return (
         <>
-          <PillarCandle x={0} y={20} w={11} h={24} lit={false} />
-          <path d="M0 -10 C-4 -15 4 -18 -1 -24" fill="none" stroke="#B9B2A3" strokeWidth={0.6} strokeLinecap="round" />
+          <PillarCandle x={0} y={19} w={11} h={24} lit={false} />
+          <path d="M0 -10 C-4 -15 4 -18 -1 -24 C-3 -27 1 -29 0 -31" fill="none" stroke="#B9B2A3" strokeWidth={0.6} strokeLinecap="round" />
+          <Rosemary x={-18} y={20} length={30} angle={-10} bend={-3} leaves={12} leafLength={7} seed={11} />
         </>
       )
     case 'florece':
       return (
         <>
-          <Orchid x={-5} y={-3} size={0.3} seed={4} />
-          <Chamomile x={10} y={10} size={7} seed={9} petals={16} />
-          <OrchidBud x={12} y={-12} size={0.5} rotate={40} />
+          <Glow x={0} y={-4} r={22} color="#F6E3B0" opacity={0.6} />
+          <ChamomileLeaf x={6} y={18} length={12} angle={-60} seed={4} />
+          <OrchidSpray points={[[-6, 18], [-6, 4], [-2, -8]]} flowers={[{ at: [-6, -2], size: 0.26, rotate: -6, seed: 4 }]} buds={[{ at: [-2, -10], size: 0.36, rotate: 30 }]} />
+          <Chamomile x={10} y={2} size={6.5} seed={9} petals={16} />
+          <Chamomile x={14} y={-10} size={4.6} seed={11} petals={14} tilt={0.7} />
+        </>
+      )
+    case 'despedida':
+      return (
+        <>
+          <Glow x={0} y={-6} r={26} color="#F6E2AA" opacity={0.95} />
+          <Pyramid x={0} y={16} w={11} h={24} />
+          <Sparkle x={0} y={-12} s={4} />
+          <Chamomile x={-15} y={14} size={5} seed={5} petals={14} tilt={0.7} />
+          <Chamomile x={15} y={15} size={4.4} seed={7} petals={14} tilt={0.7} />
+          <Orchid x={-13} y={-14} size={0.18} seed={2} />
         </>
       )
   }
@@ -205,7 +315,8 @@ function StationArt({ kind }: { kind: StationKind }): ReactNode {
 
 export function StationIcon({ kind }: { kind: StationKind }) {
   return (
-    <svg viewBox="-30 -30 60 60" className="estacion-icono" aria-hidden="true" focusable="false">
+    <svg viewBox="-32 -32 64 64" className="estacion-icono" aria-hidden="true" focusable="false">
+      <GardenBed seed={kind.length} />
       <StationArt kind={kind} />
     </svg>
   )

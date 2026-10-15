@@ -8,7 +8,8 @@ import { DayPage } from './pages/Day'
 import { DayNine } from './pages/DayNine'
 import { Florece, NotFound } from './pages/Florece'
 import { Invocacion } from './pages/Invocacion'
-import { Altar, Apertura, Cierre, Inicio } from './pages/Preparation'
+import { Altar, Apertura, Cierre, Inicio, Jardin } from './pages/Preparation'
+import { Despedida } from './pages/Despedida'
 import { pageTitle, routeKey, useRoute, type Route } from './routes'
 import { SanctuaryProvider } from './state/Sanctuary'
 
@@ -16,6 +17,10 @@ function Page({ route }: { route: Route }) {
   switch (route.name) {
     case 'inicio':
       return <Inicio />
+    case 'jardin':
+      return <Jardin />
+    case 'despedida':
+      return <Despedida />
     case 'altar':
       return <Altar />
     case 'apertura':

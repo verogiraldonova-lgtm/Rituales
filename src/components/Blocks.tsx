@@ -3,16 +3,17 @@ import { BotanicalInitial } from '../illustrations/emblems'
 
 type HeadingLevel = 'h2' | 'h3' | 'h4'
 
+/** Párrafos cortos: el texto se apoya en la base de la capitular. */
+const SHORT = 90
+
 /**
  * Texto con capitular ilustrada. La letra se dibuja en el SVG y se repite
  * oculta para lectores de pantalla, así la palabra se lee completa.
  */
-function WithInitial({ text, seed }: { text: string; seed: number }) {
-  const first = text.charAt(0)
+function InitialLetter({ text }: { text: string }) {
   return (
     <>
-      <BotanicalInitial letter={first} seed={seed} />
-      <span className="sr-only">{first}</span>
+      <span className="sr-only">{text.charAt(0)}</span>
       {text.slice(1)}
     </>
   )
@@ -37,16 +38,24 @@ export function Verse({
   return (
     <div className={`verso ${className}`}>
       {showTitle && verse.title && <Heading className="verso-titulo">{verse.title}</Heading>}
-      {verse.stanzas.map((stanza, i) => (
-        <p className={`estrofa ${initial && i === 0 ? 'con-capitular' : ''}`} key={i}>
-          {stanza.map((line, j) => (
-            <span className="verso-linea" key={j}>
-              {initial && i === 0 && j === 0 ? <WithInitial text={line} seed={17} /> : line}
-              {j < stanza.length - 1 && <br />}
-            </span>
-          ))}
-        </p>
-      ))}
+      {verse.stanzas.map((stanza, i) => {
+        const lines = stanza.map((line, j) => (
+          <span className="verso-linea" key={j}>
+            {initial && i === 0 && j === 0 ? <InitialLetter text={line} /> : line}
+            {j < stanza.length - 1 && <br />}
+          </span>
+        ))
+        return initial && i === 0 ? (
+          <p className="estrofa con-capitular capitular-corta" key={i}>
+            <BotanicalInitial letter={stanza[0].charAt(0)} seed={17} />
+            <span className="capitular-texto">{lines}</span>
+          </p>
+        ) : (
+          <p className="estrofa" key={i}>
+            {lines}
+          </p>
+        )
+      })}
     </div>
   )
 }
@@ -73,8 +82,11 @@ export function Blocks({
             const cap = firstParagraph
             firstParagraph = false
             return cap ? (
-              <p key={i} className="con-capitular">
-                <WithInitial text={block.text} seed={seed} />
+              <p key={i} className={`con-capitular ${block.text.length <= SHORT ? 'capitular-corta' : ''}`}>
+                <BotanicalInitial letter={block.text.charAt(0)} seed={seed} />
+                <span className="capitular-texto">
+                  <InitialLetter text={block.text} />
+                </span>
               </p>
             ) : (
               <p key={i}>{block.text}</p>

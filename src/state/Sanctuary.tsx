@@ -20,6 +20,8 @@ interface SanctuaryValue {
   decreaseFont: () => void
   increaseFont: () => void
   readDays: number[]
+  /** Las nueve jornadas están marcadas como leídas. */
+  allRead: boolean
   isRead: (day: number) => boolean
   toggleRead: (day: number) => void
   candle: CandleState
@@ -67,6 +69,7 @@ export function SanctuaryProvider({ children }: { children: ReactNode }) {
       decreaseFont,
       increaseFont,
       readDays,
+      allRead: readDays.length === 9,
       isRead: (day) => readDays.includes(day),
       toggleRead,
       candle,

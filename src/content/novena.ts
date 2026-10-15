@@ -17,7 +17,7 @@ export const cover = {
   title: 'LA LUZ QUE PERMANECE',
   subtitle: 'Novena botánica para honrar el amor y abrazar la vida',
   dedication: ['Para María Eugenia Nova', 'Meñita', 'En memoria de Alejandro Franco', 'Medellín · 2026'],
-  enter: 'Entrar al jardín',
+  enter: 'Comenzar',
   tagline: 'Nueve encuentros con la memoria, la gratitud y la luz',
 }
 
@@ -705,4 +705,11 @@ export const stillBlooming = {
     },
   ] as Block[],
   signature: ['Para María Eugenia Nova, con amor.', 'Medellín · 2026'],
+}
+
+/* ───────────────────────── Despedida (al completar las nueve jornadas) ───────────────────────── */
+
+export const farewell = {
+  blessing: 'Que la abundancia, la tranquilidad y el amor te acompañen siempre.',
+  signature: ['Para María Eugenia Nova', 'Meñita', 'Medellín · 2026'],
 }

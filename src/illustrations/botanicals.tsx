@@ -428,6 +428,7 @@ interface CrystalProps {
 }
 
 export function Crystal({ x, y, h, w, angle = 0 }: CrystalProps) {
+  const gid = useSvgId('cristal')
   const xl = -w / 2
   const x1 = -w * 0.17
   const x2 = w * 0.21
@@ -436,27 +437,66 @@ export function Crystal({ x, y, h, w, angle = 0 }: CrystalProps) {
   const y2 = -h - w * 0.08
   const apex: Pt = [w * 0.03, -h - w * 0.95]
   const poly = (pts: Pt[]) => pts.map((p) => `${r2(p[0])},${r2(p[1])}`).join(' ')
-  const faces: [Pt[], string][] = [
-    [[[xl, 0], [xl, -h], [x1, y1], [x1, 0]], '#7A6898'],
-    [[[x1, 0], [x1, y1], [x2, y2], [x2, 0]], '#A08EBD'],
-    [[[x2, 0], [x2, y2], [xr, -h], [xr, 0]], '#C7BADB'],
-    [[[xl, -h], apex, [x1, y1]], '#8C7AAC'],
-    [[[x1, y1], apex, [x2, y2]], '#BDAFD5'],
-    [[[x2, y2], apex, [xr, -h]], '#E4DCEF'],
+  // Cada cara con su propio degradé: luz arriba, profundidad abajo
+  const tones: [string, string][] = [
+    ['#7F68A6', '#4B3A6E'],
+    ['#C3B2E0', '#7E67A8'],
+    ['#EDE5F8', '#A592C8'],
+    ['#9C86C2', '#6A5592'],
+    ['#E2D7F2', '#B19FD3'],
+    ['#FFFFFF', '#D9CDEE'],
+  ]
+  const faces: Pt[][] = [
+    [[xl, 0], [xl, -h], [x1, y1], [x1, 0]],
+    [[x1, 0], [x1, y1], [x2, y2], [x2, 0]],
+    [[x2, 0], [x2, y2], [xr, -h], [xr, 0]],
+    [[xl, -h], apex, [x1, y1]],
+    [[x1, y1], apex, [x2, y2]],
+    [[x2, y2], apex, [xr, -h]],
   ]
   const outline: Pt[] = [[xl, 0], [xl, -h], apex, [xr, -h], [xr, 0]]
+  const hatch: ReactNode[] = []
+  for (let i = 1; i < 5; i++) {
+    const hx = xl + ((x1 - xl) * i) / 5
+    hatch.push(<path key={i} d={`M${r2(hx)} ${r2(-h * 0.08)} L${r2(hx)} ${r2(-h * 0.7 + i)}`} />)
+  }
   return (
     <g transform={`translate(${x} ${y}) rotate(${angle})`}>
+      <defs>
+        {tones.map(([top, bottom], i) => (
+          <linearGradient key={i} id={`${gid}${i}`} x1="0" y1="0" x2="0.2" y2="1">
+            <stop offset="0" stopColor={top} />
+            <stop offset="1" stopColor={bottom} />
+          </linearGradient>
+        ))}
+      </defs>
       <g filter="url(#acuarela)">
-        {faces.map(([pts, fill], i) => (
-          <polygon key={i} points={poly(pts)} fill={fill} />
+        {faces.map((pts, i) => (
+          <polygon key={i} points={poly(pts)} fill={`url(#${gid}${i})`} />
         ))}
       </g>
-      <g fill="none" stroke="#4A3E63" strokeWidth={0.42} strokeLinejoin="round" strokeOpacity={0.85}>
-        <polygon points={poly(outline)} />
-        <path d={`M${x1} 0 L${x1} ${r2(y1)} L${r2(apex[0])} ${r2(apex[1])} M${x2} 0 L${x2} ${r2(y2)} L${r2(apex[0])} ${r2(apex[1])} M${xl} ${-h} L${r2(x1)} ${r2(y1)} L${r2(x2)} ${r2(y2)} L${xr} ${-h}`} />
+      <g stroke="#3E3256" strokeWidth={0.32} opacity={0.45}>
+        {hatch}
       </g>
-      <path d={`M${r2(x1 + w * 0.1)} ${r2(-h * 0.15)} L${r2(x1 + w * 0.12)} ${r2(-h * 0.85)} M${r2(x2 + w * 0.08)} ${r2(-h * 0.3)} L${r2(x2 + w * 0.09)} ${r2(-h * 0.9)}`} stroke="#FFFFFF" strokeWidth={0.45} opacity={0.65} />
+      <g fill="none" stroke="#3E3256" strokeWidth={0.6} strokeLinejoin="round">
+        <polygon points={poly(outline)} />
+      </g>
+      <path
+        d={`M${x1} 0 L${x1} ${r2(y1)} L${r2(apex[0])} ${r2(apex[1])} M${x2} 0 L${x2} ${r2(y2)} L${r2(apex[0])} ${r2(apex[1])} M${xl} ${-h} L${r2(x1)} ${r2(y1)} L${r2(x2)} ${r2(y2)} L${xr} ${-h}`}
+        fill="none"
+        stroke="#4A3E63"
+        strokeWidth={0.38}
+        strokeOpacity={0.8}
+      />
+      {/* Brillos y vetas */}
+      <path d={`M${r2(x1 + w * 0.08)} ${r2(-h * 0.12)} L${r2(x1 + w * 0.1)} ${r2(-h * 0.88)}`} stroke="#FFFFFF" strokeWidth={w * 0.06} opacity={0.75} strokeLinecap="round" />
+      <path d={`M${r2(x2 + w * 0.09)} ${r2(-h * 0.35)} L${r2(x2 + w * 0.1)} ${r2(-h * 0.92)}`} stroke="#FFFFFF" strokeWidth={w * 0.04} opacity={0.7} strokeLinecap="round" />
+      <path d={`M${r2(x1 + w * 0.05)} ${r2(y1 - w * 0.1)} L${r2(apex[0] - w * 0.04)} ${r2(apex[1] + w * 0.25)}`} stroke="#FFFFFF" strokeWidth={w * 0.05} opacity={0.8} strokeLinecap="round" />
+      <g fill="#FFFFFF" opacity={0.7}>
+        <circle cx={r2(x2 - w * 0.12)} cy={r2(-h * 0.55)} r={w * 0.035} />
+        <circle cx={r2(x2 - w * 0.2)} cy={r2(-h * 0.45)} r={w * 0.025} />
+        <circle cx={r2(xl + w * 0.12)} cy={r2(-h * 0.3)} r={w * 0.03} />
+      </g>
     </g>
   )
 }
@@ -483,12 +523,14 @@ export function AmethystCluster({ x, y, scale = 1 }: { x: number; y: number; sca
           <path key={hx} d={`M${hx} 9 l3 -6`} />
         ))}
       </g>
-      <Crystal x={-20} y={0} h={17} w={11} angle={-30} />
-      <Crystal x={21} y={0} h={15} w={10} angle={32} />
-      <Crystal x={-8} y={-2} h={30} w={14} angle={-10} />
-      <Crystal x={9} y={-2} h={39} w={15} angle={6} />
-      <Crystal x={-1} y={3} h={14} w={10} angle={-2} />
-      <Crystal x={27} y={3} h={8} w={7} angle={52} />
+      <Crystal x={-25} y={2} h={12} w={9} angle={-48} />
+      <Crystal x={-18} y={0} h={20} w={11} angle={-30} />
+      <Crystal x={22} y={0} h={17} w={10.5} angle={30} />
+      <Crystal x={-7} y={-2} h={31} w={14} angle={-12} />
+      <Crystal x={10} y={-2} h={41} w={15.5} angle={7} />
+      <Crystal x={1} y={3} h={15} w={10} angle={-3} />
+      <Crystal x={28} y={3} h={9} w={7} angle={55} />
+      <Crystal x={-31} y={5} h={6} w={6} angle={-66} />
     </g>
   )
 }

@@ -115,9 +115,15 @@ function MenuLink({ entry, currentKey, onNavigate }: { entry: NavEntry; currentK
 }
 
 function MenuContent({ currentKey, onClose }: { currentKey: string; onClose: () => void }) {
-  const preparation = navEntries.slice(0, 4)
-  const dayEntries = navEntries.slice(4, 13)
-  const closing = navEntries.slice(13)
+  const { allRead } = useSanctuary()
+  const isDay = (e: NavEntry) => e.key.startsWith('dia-')
+  const firstDay = navEntries.findIndex(isDay)
+  const preparation = navEntries.slice(0, firstDay)
+  const dayEntries = navEntries.filter(isDay)
+  const closing = [
+    ...navEntries.slice(firstDay + dayEntries.length),
+    ...(allRead ? [{ label: 'Despedida', href: href.despedida, key: 'despedida' }] : []),
+  ]
   return (
     <div className="menu-panel">
       <div className="menu-cabecera">
@@ -193,7 +199,7 @@ export function DayNav({ current }: { current: number }) {
   )
 }
 
-/** Sección plegable con título visible: se abre al tocarla. */
+/** Sección plegable con título visible: se abre al tocarla y se cierra arriba o al final. */
 export function Fold({
   title,
   eyebrow,
@@ -208,14 +214,32 @@ export function Fold({
   children: ReactNode
 }) {
   const Heading = headingLevel
+  const ref = useRef<HTMLDetailsElement>(null)
+  const close = () => {
+    const el = ref.current
+    if (!el) return
+    el.open = false
+    const summary = el.querySelector('summary')
+    summary?.focus({ preventScroll: true })
+    const top = el.getBoundingClientRect().top
+    if (top < 0) el.scrollIntoView({ block: 'start' })
+  }
   return (
-    <details className={`plegable ${className}`}>
+    <details ref={ref} className={`plegable ${className}`}>
       <summary>
         {eyebrow && <span className="plegable-antetitulo">{eyebrow}</span>}
         <Heading className="plegable-titulo">{title}</Heading>
         <span className="plegable-accion" aria-hidden="true" />
       </summary>
-      <div className="plegable-contenido">{children}</div>
+      <div className="plegable-contenido">
+        {children}
+        <p className="plegable-pie">
+          <button type="button" className="plegable-cerrar" onClick={close}>
+            Cerrar
+            <span className="sr-only"> {title}</span>
+          </button>
+        </p>
+      </div>
     </details>
   )
 }
@@ -275,7 +299,7 @@ export function Disclosure({ summary, children }: { summary: string; children: R
 }
 
 export function ReadToggle({ day }: { day: number }) {
-  const { isRead, toggleRead } = useSanctuary()
+  const { isRead, toggleRead, allRead } = useSanctuary()
   const read = isRead(day)
   return (
     <div className="marcar-leida">
@@ -287,9 +311,21 @@ export function ReadToggle({ day }: { day: number }) {
             </svg>
           )}
         </span>
-        <span>{read ? 'Jornada leída' : 'Marcar esta jornada como leída'}</span>
+        <span>{read ? 'Jornada completada' : 'Marcar esta jornada como completada'}</span>
       </button>
-      <p className="nota-discreta">Todas las jornadas permanecen abiertas, en cualquier orden y en cualquier momento.</p>
+      <p className="nota-discreta">
+        {read
+          ? 'La flor la señala en el jardín. Puedes tocar de nuevo para desmarcarla.'
+          : 'Todas las jornadas permanecen abiertas, en cualquier orden y en cualquier momento.'}
+      </p>
+      {allRead && (
+        <div className="novena-completa" role="status">
+          <p>Has recorrido los nueve encuentros.</p>
+          <a className="boton-suave" href={href.despedida}>
+            Cerrar la novena
+          </a>
+        </div>
+      )}
     </div>
   )
 }

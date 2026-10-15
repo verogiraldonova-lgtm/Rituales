@@ -587,6 +587,39 @@ export function BloomIllustration() {
   )
 }
 
+/* ─────────────── Despedida: el jardín en plenitud ─────────────── */
+
+export function FarewellIllustration() {
+  const cx = 160
+  const cy = 120
+  const R = 84
+  const sprigs: ReactNode[] = []
+  for (let i = 0; i < 3; i++) {
+    const a0 = 104 + i * 54
+    const ra = (a0 * Math.PI) / 180
+    sprigs.push(<Rosemary key={`l${i}`} x={r2(cx + R * Math.cos(ra))} y={r2(cy + R * Math.sin(ra))} length={80} angle={a0 + 117} bend={-18} leaves={26} leafLength={14} seed={400 + i} flowers={2} />)
+    const b0 = 76 - i * 54
+    const rb = (b0 * Math.PI) / 180
+    sprigs.push(<Rosemary key={`r${i}`} x={r2(cx + R * Math.cos(rb))} y={r2(cy + R * Math.sin(rb))} length={80} angle={b0 - 117} bend={18} leaves={26} leafLength={14} seed={500 + i} flowers={2} />)
+  }
+  return (
+    <Frame>
+      <Glow x={cx} y={cy} r={130} color="#F6E2AA" opacity={0.8} className="halo-respira" />
+      <Rays x={cx} y={cy - 30} from={30} to={86} count={19} start={-170} end={-10} opacity={0.35} />
+      {sprigs}
+      <FullMoon x={cx} y={58} r={10} />
+      <Pyramid x={cx} y={150} w={30} h={62} />
+      <Chamomile x={cx - 34} y={cy + R - 6} size={8} seed={12} tilt={0.7} petals={16} />
+      <Chamomile x={cx + 34} y={cy + R - 6} size={8} seed={14} tilt={0.7} petals={16} />
+      <OrchidSpray points={[[cx - 14, cy + R + 10], [cx, cy + R]]} flowers={[{ at: [cx, cy + R], size: 0.62, seed: 7 }]} />
+      <Sparkle x={cx - 40} y={cy - 30} s={4} className="destello d1" />
+      <Sparkle x={cx + 44} y={cy - 20} s={5} className="destello d2" />
+      <Sparkle x={cx + 30} y={cy + 40} s={3} className="destello d3" />
+      <Sparkle x={cx - 46} y={cy + 30} s={3.5} className="destello d2" />
+    </Frame>
+  )
+}
+
 const SCENES: Record<IllustrationKey, () => ReactNode> = {
   umbral: Umbral,
   memoria: Memoria,

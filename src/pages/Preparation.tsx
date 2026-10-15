@@ -14,6 +14,8 @@ import { Blocks, Verse } from '../components/Blocks'
 import { Candle } from '../components/Candle'
 import { Divider, Fold, Pager } from '../components/Chrome'
 import { Garden } from '../components/Garden'
+import { TinyFlower } from '../illustrations/botanicals'
+import { useSanctuary } from '../state/Sanctuary'
 import { AltarIllustration, WreathIllustration } from '../illustrations/scenes'
 import { dayLabel, href } from '../routes'
 import { PageHero } from './PageHero'
@@ -31,14 +33,42 @@ export function Inicio() {
       <Fold title={beforeBeginning.title} className="plegable-antes">
         <Blocks blocks={beforeBeginning.blocks} dropCap seed={3} />
       </Fold>
-      <Divider seed={6} />
-      <section aria-labelledby="jardin" className="recorrido">
-        <h2 id="jardin" className="titulo-seccion">
-          El jardín
-        </h2>
-        <Garden />
-      </section>
-      <Pager next={{ href: href.altar, label: 'Preparación del altar' }} />
+      <Fold title="Preparación del altar" eyebrow={altar.title} className="plegable-altar">
+        <div className="altar-lamina">
+          <AltarIllustration />
+        </div>
+        <Blocks blocks={altar.blocks} />
+      </Fold>
+      <p className="accion-comenzar">
+        <a className="boton-entrar" href={href.jardin}>
+          Comenzar novena
+        </a>
+      </p>
+    </article>
+  )
+}
+
+export function Jardin() {
+  const { allRead } = useSanctuary()
+  return (
+    <article className="pagina pagina-jardin">
+      <PageHero eyebrow="La novena" title="El jardín" />
+      <p className="nota-discreta jardin-nota">
+        Toca cada espacio para entrar. La flor
+        <svg viewBox="-7 -7 14 14" width="18" height="18" aria-hidden="true" focusable="false" className="nota-flor">
+          <TinyFlower r={6} />
+        </svg>
+        señala las jornadas completadas.
+      </p>
+      <Garden />
+      {allRead && (
+        <p className="accion-central">
+          <a className="boton-suave" href={href.despedida}>
+            Cerrar la novena
+          </a>
+        </p>
+      )}
+      <Pager prev={{ href: href.inicio, label: 'Inicio' }} next={{ href: href.apertura, label: 'Oración de apertura' }} />
     </article>
   )
 }
