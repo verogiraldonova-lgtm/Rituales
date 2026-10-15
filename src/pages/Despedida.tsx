@@ -1,5 +1,5 @@
 import { farewell } from '../content/novena'
-import { FarewellIllustration } from '../illustrations/scenes'
+import { Painting } from '../components/Painting'
 import { href } from '../routes'
 
 /** Página de cierre de la novena, al completar los nueve encuentros. */
@@ -8,7 +8,7 @@ export function Despedida() {
   return (
     <article className="pagina despedida">
       <div className="despedida-lamina">
-        <FarewellIllustration />
+        <Painting name="despedida" eager className="pintura-vertical" />
       </div>
       <h1 id="titulo-pagina" tabIndex={-1} className="despedida-bendicion">
         {farewell.blessing}

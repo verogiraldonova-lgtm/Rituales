@@ -1,10 +1,10 @@
 import { paintings, type PaintingKey } from '../illustrations/paintings'
 
 /** Lámina pintada, liviana en el celular gracias a dos tamaños. */
-export function Painting({ name, eager = false }: { name: PaintingKey; eager?: boolean }) {
+export function Painting({ name, eager = false, className = '' }: { name: PaintingKey; eager?: boolean; className?: string }) {
   const p = paintings[name]
   return (
-    <figure className="pintura">
+    <figure className={`pintura ${className}`}>
       <img
         src={p.src}
         srcSet={`${p.small} ${p.smallWidth}w, ${p.src} ${p.width}w`}

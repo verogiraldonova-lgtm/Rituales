@@ -4,7 +4,7 @@
  */
 import type { ReactNode } from 'react'
 import { C, r2 } from './palette'
-import { stationImages } from './paintings'
+import { momentImages, stationImages } from './paintings'
 import {
   AmethystCluster,
   Chamomile,
@@ -330,36 +330,7 @@ export function StationIcon({ kind }: { kind: StationKind }) {
 /* ─────────────── Elementos de la transformación (Día IX) ─────────────── */
 
 export function MomentArt({ kind }: { kind: 'ofrenda' | 'fuego' | 'luna' }) {
-  return (
-    <svg viewBox="0 0 120 100" className="elemento-icono" aria-hidden="true" focusable="false">
-      {kind === 'ofrenda' && (
-        <>
-          <Glow x={60} y={52} r={44} opacity={0.55} />
-          <Rosemary x={14} y={70} length={92} angle={-24} bend={-6} leaves={26} leafLength={13} seed={91} flowers={2} />
-          <g transform="translate(56 50) rotate(-24)">
-            <rect x={-11} y={-7} width={22} height={14} rx={6} fill="#FBF8EF" stroke={INK_SOFT} strokeWidth={0.5} />
-            <path d="M-4 -7.5 L-1 7.5 M3 -7.5 L6 7.5" stroke="#8E6FB5" strokeWidth={0.8} />
-          </g>
-        </>
-      )}
-      {kind === 'fuego' && (
-        <>
-          <Glow x={60} y={40} r={44} color={C.flame} opacity={0.45} />
-          <SmallFlame x={60} y={50} s={0.9} />
-          <WaterBowl x={60} y={62} w={30} />
-        </>
-      )}
-      {kind === 'luna' && (
-        <>
-          <Glow x={60} y={34} r={46} color="#F1E3BC" opacity={0.95} />
-          <FullMoon x={60} y={30} r={18} />
-          <Pyramid x={60} y={88} w={16} h={30} />
-          <Sparkle x={22} y={22} s={3} />
-          <Sparkle x={98} y={40} s={2.6} />
-        </>
-      )}
-    </svg>
-  )
+  return <img className="elemento-pintura" src={momentImages[kind]} width={240} height={240} alt="" loading="lazy" decoding="async" />
 }
 
 /* ─────────────── Letra capitular botánica ─────────────── */

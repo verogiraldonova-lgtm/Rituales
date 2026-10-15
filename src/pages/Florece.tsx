@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { stillBlooming } from '../content/novena'
 import { Blocks } from '../components/Blocks'
 import { Divider, Pager } from '../components/Chrome'
-import { BloomIllustration } from '../illustrations/scenes'
+import { Painting } from '../components/Painting'
 import { readStored, writeStored } from '../state/storage'
 import { href } from '../routes'
 import { PageHero } from './PageHero'
@@ -89,7 +89,7 @@ function PrivateJournal() {
 export function Florece() {
   return (
     <article className="pagina florece">
-      <PageHero title={stillBlooming.title} subtitle={stillBlooming.subtitle} illustration={<BloomIllustration />} />
+      <PageHero title={stillBlooming.title} subtitle={stillBlooming.subtitle} illustration={<Painting name="florece" eager />} />
       <section aria-label={stillBlooming.subtitle} className="florece-texto">
         <Blocks blocks={stillBlooming.blocks} />
         <p className="firma">

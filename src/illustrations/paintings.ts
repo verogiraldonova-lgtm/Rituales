@@ -35,6 +35,18 @@ import iconoDia8 from '../assets/icono-dia-8.webp'
 import dia9 from '../assets/dia-9.webp'
 import dia9Small from '../assets/dia-9-800.webp'
 import iconoDia9 from '../assets/icono-dia-9.webp'
+import portada from '../assets/portada.webp'
+import portadaSmall from '../assets/portada-small.webp'
+import corona from '../assets/corona.webp'
+import coronaSmall from '../assets/corona-small.webp'
+import floreceImg from '../assets/florece.webp'
+import floreceSmall from '../assets/florece-small.webp'
+import despedidaImg from '../assets/despedida.webp'
+import despedidaSmall from '../assets/despedida-small.webp'
+import iconoCierre from '../assets/icono-cierre.webp'
+import iconoFlorece from '../assets/icono-florece.webp'
+import iconoDespedida from '../assets/icono-despedida.webp'
+import elementoFuego from '../assets/elemento-fuego.webp'
 
 export interface PaintingData {
   src: string
@@ -134,6 +146,38 @@ export const paintings = {
     smallWidth: 800,
     alt: 'La luna llena sobre la pirámide, el velón encendido, el cuenco con agua que refleja la luna, romero florecido y una amatista sobre el altar.',
   },
+  portada: {
+    src: portada,
+    small: portadaSmall,
+    width: 1254,
+    height: 1254,
+    smallWidth: 800,
+    alt: 'Un altar luminoso con la pirámide, velones encendidos, el cuenco con agua y manzanilla, orquídeas blancas, romero y amatistas, bajo la luna llena y el número nueve.',
+  },
+  corona: {
+    src: corona,
+    small: coronaSmall,
+    width: 1145,
+    height: 1374,
+    smallWidth: 700,
+    alt: 'Una corona de romero florecido con dos orquídeas blancas, suspendida entre estrellas y fases de la luna en oro.',
+  },
+  florece: {
+    src: floreceImg,
+    small: floreceSmall,
+    width: 1536,
+    height: 1024,
+    smallWidth: 900,
+    alt: 'Una vara de orquídeas blancas y flores de manzanilla que crecen entre romero, bajo un arco de luz dorada y lunas.',
+  },
+  despedida: {
+    src: despedidaImg,
+    small: despedidaSmall,
+    width: 1145,
+    height: 1374,
+    smallWidth: 700,
+    alt: 'Una corona de romero, orquídeas y lavanda rodea la pirámide, el número nueve y la luna llena entre estrellas doradas.',
+  },
 } satisfies Record<string, PaintingData>
 
 export type PaintingKey = keyof typeof paintings
@@ -151,4 +195,14 @@ export const stationImages: Partial<Record<string, string>> = {
   'dia-7': iconoDia7,
   'dia-8': iconoDia8,
   'dia-9': iconoDia9,
+  cierre: iconoCierre,
+  florece: iconoFlorece,
+  despedida: iconoDespedida,
+}
+
+/** Imágenes de los tres gestos de la transformación (Día IX). */
+export const momentImages = {
+  ofrenda: iconoDia2,
+  fuego: elementoFuego,
+  luna: iconoDia9,
 }

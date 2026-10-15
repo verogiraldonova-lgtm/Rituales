@@ -1,5 +1,5 @@
 import { cover } from '../content/novena'
-import { CoverIllustration } from '../illustrations/scenes'
+import { Painting } from '../components/Painting'
 import { href } from '../routes'
 
 export function Cover() {
@@ -9,7 +9,7 @@ export function Cover() {
       <div className="portada-luz" aria-hidden="true" />
       <div className="portada-interior">
         <div className="portada-lamina">
-          <CoverIllustration />
+          <Painting name="portada" eager className="pintura-portada" />
         </div>
         <h1 className="portada-titulo" id="titulo-pagina" tabIndex={-1}>
           {cover.title}

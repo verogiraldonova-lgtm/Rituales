@@ -16,7 +16,7 @@ import { Divider, Fold, Pager } from '../components/Chrome'
 import { Garden } from '../components/Garden'
 import { TinyFlower } from '../illustrations/botanicals'
 import { useSanctuary } from '../state/Sanctuary'
-import { WreathIllustration } from '../illustrations/scenes'
+import { Painting } from '../components/Painting'
 import { AltarImage } from '../components/AltarImage'
 import { dayLabel, href } from '../routes'
 import { PageHero } from './PageHero'
@@ -26,7 +26,7 @@ export function Inicio() {
   const greeting = salutation.type === 'p' ? salutation.text : ''
   return (
     <article className="pagina">
-      <PageHero title={greeting} illustration={<WreathIllustration />} className="encabezado-carta" />
+      <PageHero title={greeting} illustration={<Painting name="corona" eager className="pintura-vertical" />} className="encabezado-carta" />
       <section className="carta" aria-label={dedication.title}>
         <Blocks blocks={letter} />
       </section>
