@@ -1,31 +1,11 @@
 import { afterInvocation, invocation } from '../content/novena'
 import { Blocks, Verse } from '../components/Blocks'
 import { Pager } from '../components/Chrome'
-import { Glow, MoonPhase, Rosemary, Sparkle } from '../illustrations/botanicals'
+import { Glow, MoonPhase } from '../illustrations/botanicals'
+import { InvocationCard } from '../illustrations/emblems'
 import { C } from '../illustrations/palette'
 import { useSanctuary } from '../state/Sanctuary'
 import { dayLabel, dayRoman, href } from '../routes'
-
-/** Medallón del nueve: numeral IX en un anillo de romero. */
-function NineMedallion() {
-  return (
-    <svg viewBox="0 0 200 200" className="medallon" aria-hidden="true" focusable="false">
-      <Glow x={100} y={100} r={100} opacity={0.7} className="halo-respira" />
-      <circle cx="100" cy="100" r="74" fill="none" stroke={C.gold} strokeWidth="1" />
-      <circle cx="100" cy="100" r="68" fill="none" stroke={C.gold} strokeWidth="0.5" />
-      {Array.from({ length: 9 }, (_, i) => {
-        const a = ((i * 40 - 90) * Math.PI) / 180
-        return <circle key={i} cx={100 + Math.cos(a) * 82} cy={100 + Math.sin(a) * 82} r={3} fill={C.gold} opacity={0.4 + i * 0.07} />
-      })}
-      <Rosemary x={40} y={160} length={58} angle={-62} bend={-6} leaves={14} leafLength={11} seed={5} />
-      <Rosemary x={160} y={160} length={58} angle={-118} bend={6} leaves={14} leafLength={11} seed={7} />
-      <text x="100" y="118" textAnchor="middle" className="medallon-numeral">
-        IX
-      </text>
-      <Sparkle x={100} y={44} s={5} className="destello d1" />
-    </svg>
-  )
-}
 
 /** Las nueve luces: fases lunares que crecen hasta la luna llena. */
 function NineLights() {
@@ -65,12 +45,12 @@ export function Invocacion() {
         <span className="esquina esquina-ii" aria-hidden="true" />
         <span className="esquina esquina-id" aria-hidden="true" />
         <header className="encabezado folio-encabezado">
-          <NineMedallion />
+          <InvocationCard />
           <h1 id="titulo-pagina" tabIndex={-1}>
             {invocation.title}
           </h1>
         </header>
-        <Verse verse={invocation} showTitle={false} className="verso-iluminado" />
+        <Verse verse={invocation} showTitle={false} className="verso-iluminado" initial />
         <div className="folio-transicion">
           <NineLights />
         </div>

@@ -3,7 +3,7 @@ import { closingPrayer, invocation, openingPrayer } from '../content/novena'
 import type { Day as DayContent } from '../content/types'
 import { Blocks, Verse } from '../components/Blocks'
 import { Candle } from '../components/Candle'
-import { DayNav, Disclosure, Divider, Pager, ReadToggle } from '../components/Chrome'
+import { DayNav, Disclosure, Divider, Fold, Pager, ReadToggle } from '../components/Chrome'
 import { DayIllustration } from '../illustrations/scenes'
 import { dayLabel, href } from '../routes'
 import { PageHero } from './PageHero'
@@ -65,32 +65,19 @@ export function DayPage({ day }: { day: DayContent }) {
         <h2 id={`lectura-${n}`} className="etiqueta">
           Lectura
         </h2>
-        <Blocks blocks={day.reading} dropCap />
+        <Blocks blocks={day.reading} dropCap seed={n * 5} />
       </section>
 
       <Divider seed={n * 3 + 1} />
 
-      <section className="momento oracion" aria-labelledby={`oracion-${n}`}>
-        <p className="etiqueta" aria-hidden="true">
-          Oración
-        </p>
-        <h2 id={`oracion-${n}`} className="verso-titulo">
-          {day.prayer.title}
-        </h2>
-        <Verse verse={day.prayer} showTitle={false} className="verso-principal" />
-      </section>
-
-      <Divider seed={n * 3 + 2} />
-
-      <section className="momento gesto" aria-labelledby={`gesto-${n}`}>
-        <p className="etiqueta" aria-hidden="true">
-          Gesto
-        </p>
-        <h2 id={`gesto-${n}`} className="titulo-seccion">
-          {day.gesture.title}
-        </h2>
-        <Blocks blocks={day.gesture.blocks} />
-      </section>
+      <div className="plegables-jornada">
+        <Fold eyebrow="Oración" title={day.prayer.title} className="plegable-oracion">
+          <Verse verse={day.prayer} showTitle={false} className="verso-principal" />
+        </Fold>
+        <Fold eyebrow="Gesto" title={day.gesture.title} className="plegable-gesto">
+          <Blocks blocks={day.gesture.blocks} />
+        </Fold>
+      </div>
 
       <Divider seed={n * 3 + 7} />
 

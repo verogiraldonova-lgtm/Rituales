@@ -1,24 +1,33 @@
 /**
- * Escenas ilustradas: portada y una lámina distinta para cada jornada.
+ * Escenas ilustradas: portada, láminas de cada jornada y de las páginas especiales.
+ * Estilo: tinta fina sobre aguadas de acuarela.
  */
 import type { ReactNode } from 'react'
 import type { IllustrationKey } from '../content/types'
 import { C, r2, seeded } from './palette'
 import {
+  AerialRoot,
   AmethystCluster,
+  OpenHand,
   Chamomile,
   ChamomileLeaf,
   FullMoon,
   Glow,
-  Orchid,
-  OrchidBud,
+  Leaf,
   OrchidLeaf,
+  OrchidSpray,
+  PillarCandle,
+  Pyramid,
   Rosemary,
   Roots,
-  SmallFlame,
+  smoothPath,
   Sparkle,
   useSvgId,
+  WaterBowl,
 } from './botanicals'
+
+const INK = '#34443A'
+const INK_SOFT = '#5C6A5C'
 
 function Frame({ children, viewBox = '0 0 320 240', className = '' }: { children: ReactNode; viewBox?: string; className?: string }) {
   return (
@@ -28,37 +37,70 @@ function Frame({ children, viewBox = '0 0 320 240', className = '' }: { children
   )
 }
 
-/* ─────────────── Portada: orquídeas blancas y romero en luz dorada ─────────────── */
+/** Mancha de aguada de fondo, como papel teñido. */
+function Wash({ x, y, rx, ry, color, opacity = 0.35 }: { x: number; y: number; rx: number; ry: number; color: string; opacity?: number }) {
+  return <ellipse cx={x} cy={y} rx={rx} ry={ry} fill={color} opacity={opacity} filter="url(#acuarela)" />
+}
+
+function Rays({ x, y, from, to, count, start, end, opacity = 0.4 }: { x: number; y: number; from: number; to: number; count: number; start: number; end: number; opacity?: number }) {
+  return (
+    <g stroke={C.gold} strokeWidth={0.45} opacity={opacity} strokeLinecap="round">
+      {Array.from({ length: count }, (_, i) => {
+        const a = ((start + ((end - start) * i) / (count - 1)) * Math.PI) / 180
+        const long = i % 2 === 0 ? to : to * 0.82
+        return <line key={i} x1={r2(x + Math.cos(a) * from)} y1={r2(y + Math.sin(a) * from)} x2={r2(x + Math.cos(a) * long)} y2={r2(y + Math.sin(a) * long)} />
+      })}
+    </g>
+  )
+}
+
+/* ─────────────── Portada: la pirámide en el jardín ─────────────── */
 
 export function CoverIllustration() {
   return (
-    <Frame viewBox="0 0 400 330" className="lamina-portada">
-      <Glow x={205} y={150} r={170} color={C.goldLight} opacity={0.75} className="halo-respira" />
-      <Glow x={250} y={110} r={80} color="#FFF6DD" opacity={0.9} />
-      {/* Vara de orquídea */}
-      <path
-        d="M352 300 C350 220 320 120 250 78 C205 52 150 52 104 78"
-        fill="none"
-        stroke="#6F7F66"
-        strokeWidth={2}
-        strokeLinecap="round"
+    <Frame viewBox="0 0 400 360" className="lamina-portada">
+      <Glow x={200} y={130} r={185} color={C.goldLight} opacity={0.7} className="halo-respira" />
+      <Glow x={200} y={92} r={70} color="#FFF6DD" opacity={0.95} />
+      <Rays x={200} y={92} from={22} to={120} count={15} start={-165} end={-15} opacity={0.35} />
+      <FullMoon x={200} y={36} r={13} />
+      <Wash x={200} y={300} rx={170} ry={26} color="#D9CDAE" opacity={0.45} />
+      <Pyramid x={200} y={276} w={82} h={184} />
+      {/* Orquídea que abraza la pirámide */}
+      <OrchidSpray
+        points={[
+          [92, 318],
+          [74, 262],
+          [80, 196],
+          [108, 140],
+          [150, 104],
+          [178, 96],
+        ]}
+        flowers={[
+          { at: [78, 236], size: 0.68, rotate: -12, seed: 1 },
+          { at: [88, 176], size: 0.78, rotate: -6, seed: 2 },
+          { at: [122, 126], size: 0.7, rotate: 8, seed: 3 },
+        ]}
+        buds={[
+          { at: [156, 103], size: 0.85, rotate: 70 },
+          { at: [176, 97], size: 0.7, rotate: 84 },
+        ]}
       />
-      <path d="M352 300 C350 220 320 120 250 78" fill="none" stroke="#9AAA8D" strokeWidth={0.7} />
-      <OrchidBud x={104} y={78} size={0.8} rotate={-112} />
-      <OrchidBud x={124} y={66} size={1} rotate={-100} />
-      {/* Romero cruzado */}
-      <Rosemary x={30} y={300} length={210} angle={-26} bend={-22} leaves={44} leafLength={26} seed={11} flowers={4} />
-      <Rosemary x={70} y={318} length={160} angle={-50} bend={14} leaves={34} leafLength={22} seed={21} flowers={2} />
-      <Rosemary x={395} y={318} length={150} angle={-148} bend={-12} leaves={30} leafLength={21} seed={31} />
-      <Orchid x={170} y={78} size={0.78} rotate={-14} />
-      <Orchid x={244} y={96} size={0.98} rotate={6} />
-      <Orchid x={318} y={160} size={1.05} rotate={18} />
-      <Orchid x={330} y={250} size={0.78} rotate={-8} />
-      <Sparkle x={120} y={140} s={5} className="destello d1" />
-      <Sparkle x={290} y={56} s={4} className="destello d2" />
-      <Sparkle x={210} y={200} s={6} className="destello d3" />
-      <Sparkle x={68} y={210} s={3.5} className="destello d2" />
-      <Sparkle x={372} y={100} s={3} className="destello d1" />
+      <OrchidLeaf x={94} y={318} length={70} width={22} angle={-162} seed={3} />
+      <OrchidLeaf x={98} y={320} length={58} width={18} angle={-30} seed={5} />
+      {/* Romero que sube por la derecha */}
+      <Rosemary x={300} y={318} length={160} angle={-80} bend={16} leaves={44} leafLength={22} seed={11} flowers={4} />
+      <Rosemary x={312} y={320} length={118} angle={-58} bend={10} leaves={34} leafLength={19} seed={21} flowers={2} />
+      <Rosemary x={292} y={320} length={92} angle={-108} bend={-8} leaves={26} leafLength={17} seed={23} />
+      {/* Ofrenda al pie */}
+      <Rosemary x={128} y={330} length={150} angle={-6} bend={-8} leaves={36} leafLength={17} seed={31} flowers={2} />
+      <ChamomileLeaf x={250} y={330} length={34} angle={-150} seed={4} />
+      <Chamomile x={244} y={316} size={13} rotate={-10} seed={5} />
+      <Chamomile x={268} y={326} size={10} rotate={14} seed={7} tilt={0.7} />
+      <Sparkle x={128} y={74} s={5} className="destello d1" />
+      <Sparkle x={292} y={60} s={4} className="destello d2" />
+      <Sparkle x={248} y={170} s={4.5} className="destello d3" />
+      <Sparkle x={52} y={140} s={3.2} className="destello d2" />
+      <Sparkle x={356} y={130} s={3.5} className="destello d1" />
     </Frame>
   )
 }
@@ -67,31 +109,60 @@ export function CoverIllustration() {
 
 function Umbral() {
   const id = useSvgId('umbral')
+  const cx = 160
+  const spring = 104
   return (
     <Frame>
       <defs>
-        <radialGradient id={id} cx="0.5" cy="0.62" r="0.7">
-          <stop offset="0" stopColor="#FFF8E4" />
-          <stop offset="0.6" stopColor="#F4E6C3" />
-          <stop offset="1" stopColor="#E3CF9F" />
+        <radialGradient id={id} cx="0.5" cy="0.65" r="0.7">
+          <stop offset="0" stopColor="#FFFAEA" />
+          <stop offset="0.6" stopColor="#F6E7C2" />
+          <stop offset="1" stopColor="#E6CF98" />
         </radialGradient>
       </defs>
-      <Glow x={160} y={130} r={130} opacity={0.55} className="halo-respira" />
-      <polygon points="118,200 202,200 262,236 58,236" fill={C.goldLight} opacity={0.35} />
-      <path d="M118 200 L118 104 A42 42 0 0 1 202 104 L202 200Z" fill={`url(#${id})`} />
-      <path d="M118 200 L118 104 A42 42 0 0 1 202 104 L202 200" fill="none" stroke={C.gold} strokeWidth={1.4} />
-      <path d="M110 200 L110 104 A50 50 0 0 1 210 104 L210 200" fill="none" stroke={C.gold} strokeWidth={0.6} opacity={0.7} />
-      <line x1="40" y1="200" x2="280" y2="200" stroke={C.sandDeep} strokeWidth={0.8} />
-      {[0, 1, 2, 3, 4].map((i) => (
-        <line key={i} x1={160} y1={150} x2={124 + i * 18} y2={236} stroke={C.gold} strokeWidth={0.4} opacity={0.35} />
-      ))}
-      <Sparkle x={160} y={120} s={7} className="destello d1" />
-      <Sparkle x={143} y={150} s={3.5} className="destello d2" />
-      <Sparkle x={178} y={164} s={3} className="destello d3" />
-      <Rosemary x={70} y={214} length={150} angle={-74} bend={-14} leaves={32} leafLength={20} seed={4} flowers={2} />
-      <Rosemary x={88} y={214} length={96} angle={-58} bend={10} leaves={22} leafLength={16} seed={8} />
-      <Rosemary x={250} y={214} length={150} angle={-106} bend={14} leaves={32} leafLength={20} seed={6} flowers={2} />
-      <Rosemary x={232} y={214} length={96} angle={-122} bend={-10} leaves={22} leafLength={16} seed={12} />
+      <Glow x={cx} y={140} r={140} opacity={0.5} className="halo-respira" />
+      <Wash x={cx} y={214} rx={140} ry={20} color="#DCCFAF" opacity={0.5} />
+      {/* Luz que cae sobre el suelo */}
+      <polygon points="124,200 196,200 262,238 58,238" fill={C.goldLight} opacity={0.3} filter="url(#acuarela)" />
+      <g stroke={C.gold} strokeWidth={0.4} opacity={0.4}>
+        {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+          <line key={i} x1={cx} y1={158} x2={70 + i * 30} y2={238} />
+        ))}
+        <line x1={84} y1={218} x2={236} y2={218} />
+        <line x1={68} y1={230} x2={252} y2={230} />
+      </g>
+      {/* Puerta */}
+      <path d={`M124 200 L124 ${spring} A36 36 0 0 1 196 ${spring} L196 200Z`} fill={`url(#${id})`} />
+      <path d={`M112 200 L112 ${spring} A48 48 0 0 1 208 ${spring} L208 200 L196 200 L196 ${spring} A36 36 0 0 0 124 ${spring} L124 200Z`} fill="#EFE5CF" filter="url(#acuarela)" />
+      <g fill="none" stroke={C.goldInk} strokeWidth={0.7}>
+        <path d={`M124 200 L124 ${spring} A36 36 0 0 1 196 ${spring} L196 200`} />
+        <path d={`M112 200 L112 ${spring} A48 48 0 0 1 208 ${spring} L208 200`} />
+      </g>
+      <g stroke={C.goldInk} strokeWidth={0.4} opacity={0.7}>
+        {Array.from({ length: 11 }, (_, i) => {
+          const a = Math.PI + (Math.PI * (i + 1)) / 12
+          return <line key={i} x1={r2(cx + Math.cos(a) * 36)} y1={r2(spring + Math.sin(a) * 36)} x2={r2(cx + Math.cos(a) * 48)} y2={r2(spring + Math.sin(a) * 48)} />
+        })}
+        {[120, 140, 160, 180].map((yy) => (
+          <g key={yy}>
+            <line x1={112} y1={yy} x2={124} y2={yy} />
+            <line x1={196} y1={yy} x2={208} y2={yy} />
+          </g>
+        ))}
+      </g>
+      <path d="M100 200 L220 200 L226 206 L94 206Z" fill="#E9DDC2" stroke={C.goldInk} strokeWidth={0.5} />
+      <Sparkle x={cx} y={118} s={7} className="destello d1" />
+      <Sparkle x={144} y={150} s={3.5} className="destello d2" />
+      <Sparkle x={178} y={166} s={3} className="destello d3" />
+      {/* Romero a ambos lados */}
+      <Rosemary x={74} y={214} length={150} angle={-78} bend={-12} leaves={38} leafLength={20} seed={4} flowers={3} />
+      <Rosemary x={88} y={214} length={100} angle={-60} bend={10} leaves={28} leafLength={17} seed={8} />
+      <Rosemary x={62} y={216} length={84} angle={-104} bend={-8} leaves={22} leafLength={15} seed={10} />
+      <Rosemary x={246} y={214} length={150} angle={-102} bend={12} leaves={38} leafLength={20} seed={6} flowers={3} />
+      <Rosemary x={232} y={214} length={100} angle={-120} bend={-10} leaves={28} leafLength={17} seed={12} />
+      <Rosemary x={258} y={216} length={84} angle={-76} bend={8} leaves={22} leafLength={15} seed={14} />
+      <Leaf x={140} y={224} length={9} width={3} angle={-20} tone={2} seed={3} />
+      <Leaf x={186} y={228} length={8} width={3} angle={200} tone={3} seed={5} />
     </Frame>
   )
 }
@@ -101,75 +172,68 @@ function Umbral() {
 function Memoria() {
   const rnd = seeded(77)
   const lines: ReactNode[] = []
-  for (let i = 0; i < 7; i++) {
-    const y = 74 + i * 15
-    const end = i === 6 ? 150 : 214 - rnd() * 18
-    let d = `M96 ${y}`
-    for (let x = 96; x < end; x += 8) {
-      const amp = 1.6 + rnd() * 2.2
-      d += ` q2 ${r2(-amp)} 4 0 q2 ${r2(amp * 0.6)} 4 0`
+  for (let i = 0; i < 8; i++) {
+    const y = 72 + i * 13
+    const end = i === 7 ? 150 : 218 - rnd() * 22
+    const pts: [number, number][] = []
+    for (let xx = 98; xx <= end; xx += 3.2) {
+      pts.push([xx, y + Math.sin(xx * 0.9 + i) * (1.2 + rnd() * 1.8) - (rnd() > 0.88 ? 2.8 : 0)])
     }
-    lines.push(<path key={i} d={d} fill="none" stroke="#7D6B98" strokeWidth={0.8} opacity={0.55} strokeLinecap="round" />)
+    lines.push(<path key={i} d={smoothPath(pts)} fill="none" stroke="#6E5C8C" strokeWidth={0.6} opacity={0.65} strokeLinecap="round" />)
   }
   return (
     <Frame>
-      <Glow x={160} y={120} r={120} opacity={0.45} />
+      <Glow x={160} y={120} r={130} opacity={0.45} />
+      <Wash x={160} y={132} rx={120} ry={70} color="#E3D7BB" opacity={0.3} />
       <g transform="rotate(-6 160 120)">
-        <path
-          d="M84 52 L236 52 L236 182 Q226 196 206 190 L84 190Z"
-          fill={C.orchid}
-          stroke={C.sandDeep}
-          strokeWidth={0.9}
-        />
-        <path d="M236 182 Q222 180 206 190 Q216 186 220 178Z" fill={C.sand} stroke={C.sandDeep} strokeWidth={0.6} />
+        <path d="M84 50 L238 50 L238 180 Q228 196 206 190 L84 190Z" fill="#FBF8EF" />
+        <path d="M84 50 L238 50 L238 180 Q228 196 206 190 L84 190Z" fill="#E9DDC2" opacity={0.35} filter="url(#acuarela)" />
+        <path d="M84 50 L238 50 L238 180 Q228 196 206 190 L84 190Z" fill="none" stroke={INK_SOFT} strokeWidth={0.6} />
+        <path d="M238 180 Q222 178 206 190 Q218 186 222 176Z" fill="#E7DAC0" stroke={INK_SOFT} strokeWidth={0.5} />
+        <text x={98} y={63} fontFamily="'Cormorant Garamond', Georgia, serif" fontStyle="italic" fontSize={10} fill="#6E5C8C" opacity={0.85}>
+          Gracias, Alejo, por…
+        </text>
         {lines}
       </g>
       {/* Lápiz violeta */}
-      <g transform="translate(212 206) rotate(-28)">
-        <rect x={0} y={-3.5} width={78} height={7} rx={1.2} fill="#9C88B8" />
-        <rect x={0} y={-3.5} width={78} height={2.4} rx={1} fill="#B7A6CF" />
-        <polygon points="0,-3.5 -12,0 0,3.5" fill="#E8D9B9" />
-        <polygon points="-8,-1.2 -12,0 -8,1.2" fill="#5C4D72" />
-        <rect x={74} y={-3.5} width={6} height={7} fill={C.goldLight} />
+      <g transform="translate(206 208) rotate(-26)">
+        <rect x={0} y={-3.6} width={80} height={7.2} rx={1} fill="#9A86B6" filter="url(#acuarela)" />
+        <rect x={0} y={-3.6} width={80} height={7.2} rx={1} fill="none" stroke="#4A3E63" strokeWidth={0.45} />
+        <line x1={0} y1={-1.2} x2={80} y2={-1.2} stroke="#C8BADC" strokeWidth={0.6} />
+        <polygon points="0,-3.6 -12,0 0,3.6" fill="#EAD9B6" stroke="#4A3E63" strokeWidth={0.4} />
+        <polygon points="-8,-1.2 -12,0 -8,1.2" fill="#4A3E63" />
+        <rect x={76} y={-3.6} width={7} height={7.2} fill={C.goldLight} stroke="#4A3E63" strokeWidth={0.4} />
       </g>
-      <Rosemary x={52} y={196} length={190} angle={-38} bend={-16} leaves={40} leafLength={20} seed={14} flowers={3} />
-      <Sparkle x={250} y={66} s={4.5} className="destello d2" />
+      {/* Ramita de romero envuelta con hilo violeta */}
+      <Rosemary x={40} y={202} length={200} angle={-36} bend={-14} leaves={46} leafLength={19} seed={14} flowers={3} />
+      <g transform="translate(78 175) rotate(-36)">
+        <rect x={-10} y={-6} width={20} height={12} rx={5} fill="#FBF8EF" stroke={INK_SOFT} strokeWidth={0.5} />
+        <path d="M-4 -6.5 L-1 6.5 M2 -6.5 L5 6.5" stroke="#8E6FB5" strokeWidth={0.8} />
+      </g>
+      <Sparkle x={252} y={64} s={4.5} className="destello d2" />
     </Frame>
   )
 }
 
 /* ─────────────── III. Amatista entre manos abiertas ─────────────── */
 
-const HAND =
-  'M4 214 C4 182 1 150 2 120 L2 90 Q8 76 14 90 L15 112 L16 68 Q22 54 28 68 L29 108 L30 60 Q36 46 42 60 L43 108 L44 72 Q50 59 56 72 L57 122 C62 118 72 106 80 99 Q89 95 87 106 C81 124 71 140 64 160 C61 182 60 198 58 214'
-
 function Manos() {
   return (
     <Frame>
-      <Glow x={160} y={132} r={120} color={C.amethystLight} opacity={0.55} className="halo-respira" />
-      <Glow x={160} y={140} r={60} color="#FFF5DE" opacity={0.8} />
-      {[-1, 1].map((s) => (
-        <g key={s} transform={`translate(${160 + s * 3} 26) scale(${s * 0.9} 0.9)`}>
-          <path d={HAND} fill={C.orchid} fillOpacity={0.7} stroke={C.goldInk} strokeWidth={1.1} strokeLinejoin="round" strokeLinecap="round" />
-          <path d="M10 150 Q28 138 46 146 M14 168 Q30 160 44 166" fill="none" stroke={C.gold} strokeWidth={0.6} opacity={0.6} />
-          <path d="M6 214 L56 214" stroke={C.goldInk} strokeWidth={0.8} opacity={0.5} />
-        </g>
-      ))}
+      <Glow x={160} y={128} r={128} color={C.amethystLight} opacity={0.55} className="halo-respira" />
+      <Glow x={160} y={140} r={62} color="#FFF5DE" opacity={0.85} />
+      <Rays x={160} y={130} from={40} to={96} count={11} start={-160} end={-20} opacity={0.35} />
+      <Rosemary x={52} y={226} length={110} angle={-30} bend={-8} leaves={28} leafLength={16} seed={81} flowers={2} />
+      <Rosemary x={268} y={226} length={110} angle={-150} bend={8} leaves={28} leafLength={16} seed={83} flowers={2} />
+      <OpenHand x={186} y={232} scale={1.38} />
+      <OpenHand x={134} y={232} scale={1.38} mirror />
+      <g stroke={INK_SOFT} strokeWidth={0.5} fill="none" opacity={0.7}>
+        <path d="M110 232 Q134 236 158 232 M162 232 Q186 236 210 232" />
+      </g>
       <AmethystCluster x={160} y={168} scale={0.95} />
-      {[-60, -30, 0, 30, 60].map((a) => (
-        <line
-          key={a}
-          x1={160}
-          y1={118}
-          x2={r2(160 + Math.sin((a * Math.PI) / 180) * 70)}
-          y2={r2(118 - Math.cos((a * Math.PI) / 180) * 70)}
-          stroke={C.gold}
-          strokeWidth={0.5}
-          opacity={0.45}
-        />
-      ))}
-      <Sparkle x={128} y={74} s={4} className="destello d1" />
-      <Sparkle x={196} y={64} s={5} className="destello d3" />
+      <Sparkle x={126} y={70} s={4} className="destello d1" />
+      <Sparkle x={198} y={60} s={5} className="destello d3" />
+      <Sparkle x={160} y={104} s={3.5} className="destello d2" />
     </Frame>
   )
 }
@@ -177,32 +241,28 @@ function Manos() {
 /* ─────────────── IV. Cuenco con agua y luz de ventana ─────────────── */
 
 function Casa() {
-  const id = useSvgId('agua')
   return (
     <Frame>
-      <defs>
-        <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#E3EAE2" />
-          <stop offset="1" stopColor={C.water} />
-        </linearGradient>
-      </defs>
-      {/* Ventana */}
-      <path d="M196 120 L196 50 A34 34 0 0 1 264 50 L264 120Z" fill="#FFF8E6" stroke={C.gold} strokeWidth={1.2} />
-      <path d="M230 16 L230 120 M196 76 L264 76" stroke={C.gold} strokeWidth={0.8} />
-      <path d="M188 128 L272 128" stroke={C.sandDeep} strokeWidth={1.2} />
+      <Glow x={226} y={70} r={110} opacity={0.5} />
+      {/* Ventana con cortina */}
+      <path d="M196 122 L196 52 A34 34 0 0 1 264 52 L264 122Z" fill="#FFF8E8" />
+      <path d="M196 122 L196 52 A34 34 0 0 1 264 52 L264 122Z" fill="#F4E3B8" opacity={0.5} filter="url(#acuarela)" />
+      <path d="M230 18 L230 122 M196 78 L264 78 M196 100 L264 100" stroke={C.goldInk} strokeWidth={0.6} />
+      <path d="M196 122 L196 52 A34 34 0 0 1 264 52 L264 122Z" fill="none" stroke={C.goldInk} strokeWidth={0.9} />
+      <path d="M188 128 L272 128 L268 122 L192 122Z" fill="#EADDC0" stroke={C.goldInk} strokeWidth={0.6} />
+      <path d="M266 20 Q258 60 276 128 L290 128 Q276 70 286 22Z" fill="#E8E2D0" opacity={0.85} filter="url(#acuarela)" />
+      <path d="M266 20 Q258 60 276 128 M286 22 Q276 70 290 128 M272 30 Q268 80 282 126" fill="none" stroke={INK_SOFT} strokeWidth={0.45} />
       {/* Haz de luz */}
-      <polygon points="198,120 262,120 168,214 56,214" fill={C.goldLight} opacity={0.28} />
-      <polygon points="212,120 248,120 140,214 92,214" fill="#FFF3D6" opacity={0.5} />
-      <line x1="30" y1="214" x2="290" y2="214" stroke={C.sandDeep} strokeWidth={0.8} />
-      {/* Cuenco */}
-      <ellipse cx={112} cy={212} rx={46} ry={5} fill={C.sand} opacity={0.6} />
-      <path d="M64 176 Q66 210 112 212 Q158 210 160 176Z" fill="#F1EADB" stroke={C.goldInk} strokeWidth={1} />
-      <ellipse cx={112} cy={176} rx={48} ry={10} fill={`url(#${id})`} stroke={C.goldInk} strokeWidth={1} />
-      <ellipse cx={120} cy={176} rx={20} ry={3.5} fill="none" stroke="#FFFFFF" strokeWidth={0.8} opacity={0.9} />
-      <ellipse cx={120} cy={176} rx={32} ry={5.5} fill="none" stroke="#FFFFFF" strokeWidth={0.5} opacity={0.6} />
-      <Sparkle x={126} y={175} s={4} fill="#FFFFFF" opacity={0.95} className="destello d2" />
-      <Rosemary x={196} y={210} length={86} angle={-12} bend={-6} leaves={20} leafLength={14} seed={41} />
-      <Sparkle x={240} y={36} s={4} className="destello d1" />
+      <polygon points="200,122 262,122 172,206 60,206" fill={C.goldLight} opacity={0.28} filter="url(#acuarela)" />
+      <polygon points="214,122 248,122 142,206 96,206" fill="#FFF3D6" opacity={0.55} />
+      {/* Repisa y cuenco */}
+      <path d="M30 206 L290 206" stroke={INK_SOFT} strokeWidth={0.6} />
+      <Wash x={160} y={214} rx={140} ry={10} color="#D9CBA8" opacity={0.45} />
+      <WaterBowl x={112} y={174} w={46} />
+      <Sparkle x={124} y={173} s={4} fill="#FFFFFF" opacity={0.95} className="destello d2" />
+      <Rosemary x={186} y={204} length={96} angle={-10} bend={-6} leaves={26} leafLength={14} seed={41} flowers={2} />
+      <Leaf x={58} y={200} length={10} width={3.4} angle={-30} tone={1} seed={8} />
+      <Sparkle x={240} y={40} s={4} className="destello d1" />
     </Frame>
   )
 }
@@ -211,73 +271,89 @@ function Casa() {
 
 function Raices() {
   const id = useSvgId('tierra')
+  const rnd = seeded(5)
   return (
     <Frame>
       <defs>
-        <radialGradient id={id} cx="0.5" cy="0" r="0.75">
-          <stop offset="0" stopColor={C.sand} stopOpacity={0.55} />
-          <stop offset="1" stopColor={C.sand} stopOpacity={0} />
+        <radialGradient id={id} cx="0.5" cy="0" r="0.8">
+          <stop offset="0" stopColor="#CDBC97" stopOpacity={0.65} />
+          <stop offset="1" stopColor="#CDBC97" stopOpacity={0} />
         </radialGradient>
       </defs>
-      <Glow x={160} y={70} r={110} opacity={0.5} />
-      <rect x={10} y={128} width={300} height={112} fill={`url(#${id})`} />
-      <path d="M40 128 Q100 123 160 128 T280 128" fill="none" stroke={C.sandDeep} strokeWidth={0.9} />
+      <Glow x={160} y={64} r={110} opacity={0.5} />
+      <rect x={10} y={128} width={300} height={112} fill={`url(#${id})`} filter="url(#acuarela)" />
+      <path d="M36 128 Q100 123 160 128 T284 128" fill="none" stroke={INK_SOFT} strokeWidth={0.7} />
+      {Array.from({ length: 14 }, (_, i) => (
+        <ellipse key={i} cx={r2(40 + rnd() * 240)} cy={r2(140 + rnd() * 80)} rx={r2(2 + rnd() * 3)} ry={r2(1.4 + rnd() * 1.6)} fill="#D8CCAF" stroke={INK_SOFT} strokeWidth={0.3} opacity={0.7} />
+      ))}
       <Roots x={160} y={128} length={30} depth={5} seed={19} spread={34} />
-      <Roots x={150} y={128} length={22} depth={4} seed={23} spread={30} angle={110} />
-      <Roots x={170} y={128} length={22} depth={4} seed={29} spread={30} angle={70} />
-      <Rosemary x={160} y={130} length={112} angle={-90} bend={-6} leaves={28} leafLength={18} seed={51} flowers={2} />
-      <Rosemary x={156} y={130} length={92} angle={-118} bend={-10} leaves={24} leafLength={16} seed={53} />
-      <Rosemary x={164} y={130} length={96} angle={-62} bend={10} leaves={24} leafLength={16} seed={55} flowers={1} />
-      <Rosemary x={158} y={130} length={64} angle={-146} bend={-6} leaves={16} leafLength={13} seed={57} />
-      <Rosemary x={162} y={130} length={66} angle={-34} bend={6} leaves={16} leafLength={13} seed={59} />
-      <Sparkle x={86} y={170} s={3} fill={C.goldInk} opacity={0.5} className="destello d1" />
-      <Sparkle x={238} y={190} s={3} fill={C.goldInk} opacity={0.5} className="destello d3" />
+      <Roots x={150} y={129} length={22} depth={4} seed={23} spread={30} angle={115} />
+      <Roots x={170} y={129} length={22} depth={4} seed={29} spread={30} angle={65} />
+      <Rosemary x={160} y={130} length={112} angle={-90} bend={-6} leaves={34} leafLength={18} seed={51} flowers={3} />
+      <Rosemary x={156} y={130} length={92} angle={-118} bend={-10} leaves={28} leafLength={16} seed={53} flowers={1} />
+      <Rosemary x={164} y={130} length={96} angle={-62} bend={10} leaves={28} leafLength={16} seed={55} flowers={1} />
+      <Rosemary x={158} y={130} length={64} angle={-146} bend={-6} leaves={18} leafLength={13} seed={57} />
+      <Rosemary x={162} y={130} length={66} angle={-34} bend={6} leaves={18} leafLength={13} seed={59} />
+      <Sparkle x={84} y={176} s={3} fill={C.goldInk} opacity={0.5} className="destello d1" />
+      <Sparkle x={240} y={194} s={3} fill={C.goldInk} opacity={0.5} className="destello d3" />
     </Frame>
   )
 }
 
 /* ─────────────── VI. Manzanilla y luz de mañana ─────────────── */
 
+function Teacup({ x, y }: { x: number; y: number }) {
+  const id = useSvgId('te')
+  return (
+    <g transform={`translate(${x} ${y})`}>
+      <defs>
+        <radialGradient id={id} cx="0.45" cy="0.45" r="0.6">
+          <stop offset="0" stopColor="#F3DC9C" />
+          <stop offset="1" stopColor="#D9AE57" />
+        </radialGradient>
+      </defs>
+      <ellipse cx={0} cy={14} rx={34} ry={6} fill="#EFE7D6" stroke={INK_SOFT} strokeWidth={0.5} />
+      <path d="M-24 -10 Q-23 12 0 13 Q23 12 24 -10Z" fill="#FBF7EE" stroke={INK_SOFT} strokeWidth={0.55} />
+      <path d="M-24 -10 Q-23 12 0 13 Q23 12 24 -10Z" fill="#E7DCC4" opacity={0.4} filter="url(#acuarela)" />
+      <path d="M23 -4 q12 -2 10 8 q-2 7 -12 5" fill="none" stroke={INK_SOFT} strokeWidth={0.6} />
+      <ellipse cx={0} cy={-10} rx={24} ry={4.5} fill={`url(#${id})`} stroke={INK_SOFT} strokeWidth={0.5} />
+      <g fill="none" stroke={INK_SOFT} strokeWidth={0.45} opacity={0.55} strokeLinecap="round" className="vapor">
+        <path d="M-8 -16 C-14 -24 -2 -28 -8 -38 C-12 -44 -6 -48 -8 -54" />
+        <path d="M4 -17 C-2 -26 10 -30 4 -40 C1 -46 6 -50 4 -56" />
+      </g>
+      <Chamomile x={-6} y={-10} size={5} tilt={0.4} seed={41} petals={14} />
+    </g>
+  )
+}
+
 function Alegria() {
   return (
     <Frame>
-      <Glow x={160} y={176} r={150} color="#F6DFA6" opacity={0.6} className="halo-respira" />
-      {Array.from({ length: 13 }, (_, i) => {
-        const a = (-90 + (i - 6) * 13) * (Math.PI / 180)
-        return (
-          <line
-            key={i}
-            x1={r2(160 + Math.cos(a) * 46)}
-            y1={r2(176 + Math.sin(a) * 46)}
-            x2={r2(160 + Math.cos(a) * 140)}
-            y2={r2(176 + Math.sin(a) * 140)}
-            stroke={C.gold}
-            strokeWidth={0.6}
-            opacity={0.45}
-          />
-        )
-      })}
-      <path d="M118 176 A42 42 0 0 1 202 176Z" fill="#FBEBC3" stroke={C.gold} strokeWidth={0.9} />
-      <line x1="24" y1="176" x2="296" y2="176" stroke={C.sandDeep} strokeWidth={0.8} />
-      {/* Tallos */}
-      <g fill="none" stroke={C.sage} strokeWidth={1.2} strokeLinecap="round">
-        <path d="M100 236 Q96 170 84 118" />
-        <path d="M120 236 Q126 180 136 92" />
-        <path d="M206 236 Q206 186 214 132" />
-        <path d="M226 236 Q236 196 256 150" />
-        <path d="M70 236 Q64 200 50 168" />
+      <Glow x={160} y={170} r={160} color="#F6DFA6" opacity={0.6} className="halo-respira" />
+      <Rays x={160} y={170} from={46} to={142} count={15} start={-174} end={-6} opacity={0.4} />
+      <path d="M116 170 A44 44 0 0 1 204 170Z" fill="#FBE3A6" filter="url(#acuarela)" />
+      <path d="M116 170 A44 44 0 0 1 204 170" fill="none" stroke={C.goldInk} strokeWidth={0.6} />
+      <line x1="20" y1="170" x2="300" y2="170" stroke={INK_SOFT} strokeWidth={0.5} opacity={0.6} />
+      {/* Ramo de manzanilla */}
+      <g fill="none" strokeLinecap="round">
+        {['M98 238 Q94 170 82 112', 'M112 238 Q120 176 134 86', 'M124 238 Q140 190 176 130', 'M86 238 Q76 196 54 158', 'M104 238 Q104 200 108 150'].map((d) => (
+          <g key={d}>
+            <path d={d} stroke="#93A985" strokeWidth={1.8} filter="url(#acuarela)" />
+            <path d={d} stroke={INK} strokeWidth={0.5} />
+          </g>
+        ))}
       </g>
-      <ChamomileLeaf x={100} y={214} length={38} angle={-130} seed={2} />
-      <ChamomileLeaf x={122} y={208} length={34} angle={-48} seed={4} />
-      <ChamomileLeaf x={208} y={214} length={36} angle={-136} seed={6} />
-      <ChamomileLeaf x={228} y={220} length={30} angle={-40} seed={8} />
-      <Chamomile x={84} y={116} size={17} rotate={-12} seed={3} />
-      <Chamomile x={136} y={90} size={20} rotate={8} seed={5} />
-      <Chamomile x={214} y={130} size={18} rotate={-4} seed={7} />
-      <Chamomile x={256} y={148} size={14} rotate={14} seed={9} tilt={0.7} />
-      <Chamomile x={50} y={166} size={12} rotate={-20} seed={11} tilt={0.7} />
-      <Sparkle x={182} y={70} s={4.5} className="destello d1" />
-      <Sparkle x={278} y={104} s={3.5} className="destello d2" />
+      <ChamomileLeaf x={98} y={214} length={40} angle={-134} seed={2} />
+      <ChamomileLeaf x={114} y={206} length={36} angle={-52} seed={4} />
+      <ChamomileLeaf x={92} y={226} length={30} angle={-160} seed={6} />
+      <Chamomile x={82} y={110} size={16} rotate={-12} seed={3} />
+      <Chamomile x={134} y={84} size={19} rotate={8} seed={5} />
+      <Chamomile x={176} y={128} size={15} rotate={-4} seed={7} tilt={0.72} />
+      <Chamomile x={54} y={156} size={12} rotate={-20} seed={11} tilt={0.66} />
+      <Chamomile x={108} y={148} size={11} rotate={10} seed={13} tilt={0.6} />
+      <Teacup x={240} y={208} />
+      <Sparkle x={190} y={70} s={4.5} className="destello d1" />
+      <Sparkle x={280} y={110} s={3.5} className="destello d2" />
     </Frame>
   )
 }
@@ -287,34 +363,30 @@ function Alegria() {
 function Mujer() {
   return (
     <Frame>
-      <Glow x={160} y={130} r={140} color={C.amethystLight} opacity={0.6} className="halo-respira" />
-      <Glow x={160} y={124} r={70} color="#FFF4DA" opacity={0.95} />
-      {[44, 62, 82].map((r, i) => (
-        <circle key={r} cx={160} cy={128} r={r} fill="none" stroke={C.gold} strokeWidth={0.6} opacity={0.5 - i * 0.12} />
+      <Glow x={160} y={126} r={140} color={C.amethystLight} opacity={0.6} className="halo-respira" />
+      <Glow x={160} y={122} r={72} color="#FFF4DA" opacity={0.95} />
+      {[46, 64, 84].map((r, i) => (
+        <circle key={r} cx={160} cy={126} r={r} fill="none" stroke={C.gold} strokeWidth={0.5} opacity={0.5 - i * 0.12} strokeDasharray={i === 1 ? '1 3' : undefined} />
       ))}
-      {Array.from({ length: 24 }, (_, i) => {
-        const a = (i * 15 * Math.PI) / 180
-        const r1 = i % 2 ? 92 : 88
-        const rr = i % 2 ? 104 : 116
-        return (
-          <line
-            key={i}
-            x1={r2(160 + Math.cos(a) * r1)}
-            y1={r2(128 + Math.sin(a) * r1)}
-            x2={r2(160 + Math.cos(a) * rr)}
-            y2={r2(128 + Math.sin(a) * rr)}
-            stroke={C.gold}
-            strokeWidth={0.6}
-            opacity={0.5}
-          />
-        )
-      })}
-      <AmethystCluster x={160} y={170} scale={1.5} />
-      <Sparkle x={160} y={60} s={6} className="destello d1" />
-      <Sparkle x={112} y={100} s={3.5} className="destello d2" />
-      <Sparkle x={212} y={92} s={4} className="destello d3" />
-      <Rosemary x={64} y={214} length={70} angle={-20} bend={-6} leaves={16} leafLength={12} seed={61} />
-      <Rosemary x={256} y={214} length={70} angle={-160} bend={6} leaves={16} leafLength={12} seed={63} />
+      <Rays x={160} y={126} from={90} to={116} count={36} start={0} end={350} opacity={0.45} />
+      <AmethystCluster x={160} y={168} scale={1.45} />
+      <OrchidSpray
+        points={[
+          [262, 222],
+          [270, 186],
+          [258, 150],
+          [236, 124],
+        ]}
+        flowers={[
+          { at: [266, 182], size: 0.42, rotate: 10, seed: 4 },
+          { at: [252, 144], size: 0.38, rotate: -12, seed: 6 },
+        ]}
+        buds={[{ at: [236, 124], size: 0.55, rotate: -60 }]}
+      />
+      <Rosemary x={46} y={222} length={96} angle={-34} bend={-6} leaves={26} leafLength={14} seed={61} flowers={2} />
+      <Sparkle x={160} y={52} s={6} className="destello d1" />
+      <Sparkle x={108} y={96} s={3.5} className="destello d2" />
+      <Sparkle x={214} y={84} s={4} className="destello d3" />
     </Frame>
   )
 }
@@ -324,31 +396,43 @@ function Mujer() {
 function Jardin() {
   return (
     <Frame>
-      <Glow x={180} y={90} r={130} opacity={0.5} />
+      <Glow x={184} y={88} r={130} opacity={0.5} />
+      <Wash x={160} y={232} rx={90} ry={8} color="#D9CBA8" opacity={0.5} />
       {/* Maceta */}
-      <path d="M118 196 L124 232 L196 232 L202 196Z" fill="#EFE6D3" stroke={C.goldInk} strokeWidth={0.9} />
-      <path d="M114 190 L206 190 L206 198 L114 198Z" fill={C.sand} stroke={C.goldInk} strokeWidth={0.9} />
-      {/* Raíces aéreas */}
-      <g fill="none" stroke="#B9BDA9" strokeWidth={2.4} strokeLinecap="round">
-        <path d="M150 188 Q136 196 132 214" />
-        <path d="M172 188 Q190 194 196 210 Q198 218 192 222" />
+      <path d="M120 196 L127 232 L193 232 L200 196Z" fill="#E9DDC4" filter="url(#acuarela)" />
+      <path d="M120 196 L127 232 L193 232 L200 196Z" fill="none" stroke={INK_SOFT} strokeWidth={0.6} />
+      <g stroke={INK_SOFT} strokeWidth={0.3} opacity={0.6}>
+        {[184, 188, 192, 196].map((xx) => (
+          <line key={xx} x1={xx} y1={200} x2={xx - 2} y2={230} />
+        ))}
       </g>
-      <g fill="none" stroke="#9DB08E" strokeWidth={2.4} strokeLinecap="round">
-        <path d="M132 213 l-0.6 3" />
-        <path d="M192 222 l-2 1.4" />
-      </g>
-      {/* Vara */}
-      <path d="M160 186 C158 130 170 70 216 44 C236 33 258 34 272 44" fill="none" stroke="#6F7F66" strokeWidth={1.8} strokeLinecap="round" />
-      <OrchidLeaf x={160} y={188} length={96} width={22} angle={-168} />
-      <OrchidLeaf x={160} y={188} length={92} width={22} angle={-14} />
-      <OrchidLeaf x={160} y={186} length={66} width={18} angle={-128} />
-      <OrchidBud x={272} y={44} size={0.75} rotate={80} />
-      <OrchidBud x={258} y={37} size={0.9} rotate={70} />
-      <Orchid x={162} y={128} size={0.62} rotate={-10} />
-      <Orchid x={180} y={80} size={0.66} rotate={4} />
-      <Orchid x={226} y={50} size={0.6} rotate={14} />
-      <Sparkle x={96} y={70} s={4} className="destello d2" />
-      <Sparkle x={268} y={110} s={3.5} className="destello d1" />
+      <path d="M116 190 L204 190 L204 198 L116 198Z" fill="#E2D3B4" stroke={INK_SOFT} strokeWidth={0.6} />
+      <AerialRoot d="M148 188 Q132 196 130 216" />
+      <AerialRoot d="M172 188 Q192 194 198 210 Q200 218 194 224" />
+      <OrchidLeaf x={160} y={188} length={98} width={26} angle={-170} seed={1} />
+      <OrchidLeaf x={160} y={188} length={92} width={25} angle={-12} seed={2} />
+      <OrchidLeaf x={160} y={186} length={64} width={20} angle={-132} seed={4} />
+      <OrchidSpray
+        points={[
+          [160, 186],
+          [158, 140],
+          [168, 90],
+          [196, 56],
+          [236, 38],
+          [270, 44],
+        ]}
+        flowers={[
+          { at: [160, 130], size: 0.6, rotate: -10, seed: 1 },
+          { at: [176, 82], size: 0.66, rotate: 4, seed: 2 },
+          { at: [222, 46], size: 0.58, rotate: 12, seed: 3 },
+        ]}
+        buds={[
+          { at: [256, 39], size: 0.85, rotate: 74 },
+          { at: [270, 44], size: 0.7, rotate: 96 },
+        ]}
+      />
+      <Sparkle x={96} y={68} s={4} className="destello d2" />
+      <Sparkle x={272} y={110} s={3.5} className="destello d1" />
     </Frame>
   )
 }
@@ -356,38 +440,29 @@ function Jardin() {
 /* ─────────────── IX. Luna llena, romero, fuego y agua ─────────────── */
 
 export function Luna({ className = '' }: { className?: string }) {
-  const id = useSvgId('cuenco')
   return (
     <Frame className={className}>
-      <rect x={0} y={0} width={320} height={240} fill="none" />
       <g className="luna-resplandor">
-        <Glow x={160} y={78} r={150} color="#F1E3BC" opacity={0.9} />
+        <Glow x={160} y={76} r={150} color="#F1E3BC" opacity={0.9} />
       </g>
-      <Glow x={160} y={78} r={70} color="#FFFBEE" opacity={0.9} />
-      <FullMoon x={160} y={78} r={44} />
-      <Sparkle x={70} y={42} s={3.5} className="destello d1" />
-      <Sparkle x={252} y={30} s={4.5} className="destello d3" />
-      <Sparkle x={274} y={96} s={3} className="destello d2" />
-      <Sparkle x={42} y={110} s={2.5} className="destello d3" />
-      <line x1="24" y1="210" x2="296" y2="210" stroke={C.sandDeep} strokeWidth={0.8} />
-      <defs>
-        <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#E7EDE6" />
-          <stop offset="1" stopColor={C.water} />
-        </linearGradient>
-      </defs>
-      {/* Cuenco con el reflejo de la luna */}
-      <path d="M118 184 Q120 210 160 211 Q200 210 202 184Z" fill="#F1EADB" stroke={C.goldInk} strokeWidth={1} />
-      <ellipse cx={160} cy={184} rx={42} ry={8.5} fill={`url(#${id})`} stroke={C.goldInk} strokeWidth={1} />
-      <ellipse cx={160} cy={184} rx={9} ry={3.2} fill="#FFFDF2" />
-      <ellipse cx={160} cy={184} rx={16} ry={5} fill="none" stroke="#FFFFFF" strokeWidth={0.5} opacity={0.8} />
-      {/* Velón */}
-      <rect x={68} y={160} width={22} height={50} rx={2} fill={C.orchid} stroke={C.sandDeep} strokeWidth={0.8} />
-      <line x1={79} y1={160} x2={79} y2={154} stroke="#5B5245" strokeWidth={1} />
-      <SmallFlame x={79} y={155} s={0.7} />
-      {/* Romero */}
-      <Rosemary x={214} y={208} length={96} angle={-22} bend={-8} leaves={24} leafLength={15} seed={71} flowers={2} />
-      <Rosemary x={222} y={210} length={70} angle={-6} bend={-4} leaves={18} leafLength={12} seed={73} />
+      <Glow x={160} y={76} r={70} color="#FFFBEE" opacity={0.9} />
+      <FullMoon x={160} y={76} r={42} />
+      <g fill="none" stroke={C.gold} strokeWidth={0.5} opacity={0.55} strokeLinecap="round">
+        <path d="M70 108 Q96 100 120 108 T170 110" />
+        <path d="M182 46 Q212 38 236 46 T272 44" />
+      </g>
+      <Sparkle x={70} y={40} s={3.5} className="destello d1" />
+      <Sparkle x={254} y={28} s={4.5} className="destello d3" />
+      <Sparkle x={276} y={96} s={3} className="destello d2" />
+      <Sparkle x={44} y={120} s={2.6} className="destello d3" />
+      <Wash x={160} y={214} rx={140} ry={12} color="#D9CBA8" opacity={0.45} />
+      <line x1="24" y1="208" x2="296" y2="208" stroke={INK_SOFT} strokeWidth={0.5} opacity={0.6} />
+      <PillarCandle x={80} y={208} w={22} h={52} />
+      <WaterBowl x={160} y={182} w={42} reflection={false} />
+      <ellipse cx={160} cy={182} rx={9} ry={3} fill="#FFFDF2" />
+      <ellipse cx={160} cy={182} rx={16} ry={4.8} fill="none" stroke="#FFFFFF" strokeWidth={0.5} opacity={0.8} />
+      <Rosemary x={208} y={206} length={100} angle={-20} bend={-8} leaves={28} leafLength={15} seed={71} flowers={2} />
+      <Rosemary x={216} y={208} length={72} angle={-4} bend={-4} leaves={20} leafLength={12} seed={73} />
     </Frame>
   )
 }
@@ -395,85 +470,72 @@ export function Luna({ className = '' }: { className?: string }) {
 /* ─────────────── Preparación del altar ─────────────── */
 
 export function AltarIllustration() {
-  const id = useSvgId('piramide')
   return (
     <Frame>
-      <defs>
-        <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#FFFDF6" />
-          <stop offset="1" stopColor="#EADFC6" />
-        </linearGradient>
-      </defs>
-      <Glow x={160} y={128} r={130} opacity={0.6} className="halo-respira" />
+      <Glow x={160} y={120} r={130} opacity={0.55} className="halo-respira" />
       {/* Tela clara */}
-      <path d="M26 172 Q160 162 294 172 L302 224 Q160 236 18 224Z" fill="#F3EDE0" stroke={C.sandDeep} strokeWidth={0.8} />
-      <path d="M70 176 Q74 200 66 226 M250 176 Q246 200 254 226 M160 170 Q164 200 158 232" fill="none" stroke={C.sand} strokeWidth={0.8} />
+      <path d="M24 170 Q160 160 296 170 L304 224 Q160 236 16 224Z" fill="#F1EADB" filter="url(#acuarela)" />
+      <path d="M24 170 Q160 160 296 170 L304 224 Q160 236 16 224Z" fill="none" stroke={INK_SOFT} strokeWidth={0.55} />
+      <path d="M70 174 Q74 200 66 228 M250 174 Q246 200 254 228 M160 168 Q164 200 158 232" fill="none" stroke={INK_SOFT} strokeWidth={0.35} opacity={0.6} />
       {/* Orquídea en su maceta */}
-      <path d="M232 152 L235 174 L263 174 L266 152Z" fill="#EFE6D3" stroke={C.goldInk} strokeWidth={0.8} />
-      <OrchidLeaf x={249} y={152} length={40} width={10} angle={-160} />
-      <OrchidLeaf x={249} y={152} length={38} width={10} angle={-20} />
-      <path d="M249 150 C248 110 236 74 206 60" fill="none" stroke="#6F7F66" strokeWidth={1.3} />
-      <OrchidBud x={206} y={60} size={0.6} rotate={-80} />
-      <Orchid x={226} y={70} size={0.42} rotate={-8} />
-      <Orchid x={242} y={102} size={0.46} rotate={10} />
-      {/* Velón */}
-      <rect x={66} y={118} width={24} height={56} rx={2} fill={C.orchid} stroke={C.sandDeep} strokeWidth={0.8} />
-      <ellipse cx={78} cy={118} rx={12} ry={2.6} fill="#F6F1E4" stroke={C.sandDeep} strokeWidth={0.6} />
-      <line x1={78} y1={118} x2={78} y2={112} stroke="#5B5245" strokeWidth={1} />
-      <SmallFlame x={78} y={113} s={0.6} />
-      {/* Pirámide */}
-      <polygon points="122,176 160,92 160,176" fill={`url(#${id})`} />
-      <polygon points="160,92 198,176 160,176" fill="#E4D8BD" />
-      <polygon points="122,176 160,92 198,176" fill="none" stroke={C.gold} strokeWidth={1.1} strokeLinejoin="round" />
-      <line x1={160} y1={92} x2={160} y2={176} stroke={C.gold} strokeWidth={0.6} />
-      <Sparkle x={160} y={90} s={5} className="destello d1" />
-      {/* Cuenco con agua */}
-      <path d="M86 192 Q88 212 112 213 Q136 212 138 192Z" fill="#F1EADB" stroke={C.goldInk} strokeWidth={0.8} />
-      <ellipse cx={112} cy={192} rx={26} ry={5.5} fill={C.water} stroke={C.goldInk} strokeWidth={0.8} />
-      <ellipse cx={116} cy={192} rx={10} ry={2} fill="none" stroke="#FFFFFF" strokeWidth={0.6} />
-      {/* Amatista */}
-      <AmethystCluster x={206} y={206} scale={0.5} />
-      {/* Papel y lápiz violeta */}
+      <path d="M232 152 L236 174 L264 174 L268 152Z" fill="#E9DDC4" stroke={INK_SOFT} strokeWidth={0.55} />
+      <OrchidLeaf x={250} y={152} length={42} width={12} angle={-166} seed={3} />
+      <OrchidLeaf x={250} y={152} length={40} width={12} angle={-16} seed={4} />
+      <OrchidSpray
+        points={[
+          [250, 150],
+          [250, 116],
+          [238, 84],
+          [214, 62],
+        ]}
+        flowers={[
+          { at: [248, 108], size: 0.4, rotate: 8, seed: 5 },
+          { at: [232, 76], size: 0.38, rotate: -8, seed: 6 },
+        ]}
+        buds={[{ at: [214, 62], size: 0.6, rotate: -70 }]}
+      />
+      <PillarCandle x={78} y={174} w={22} h={56} />
+      <Pyramid x={160} y={174} w={38} h={84} />
+      <Sparkle x={160} y={86} s={5} className="destello d1" />
+      <WaterBowl x={110} y={196} w={24} />
+      <AmethystCluster x={206} y={204} scale={0.48} />
       <g transform="translate(240 206) rotate(-8)">
-        <rect x={0} y={-10} width={34} height={22} rx={1} fill={C.orchid} stroke={C.sandDeep} strokeWidth={0.6} />
-        <rect x={6} y={6} width={40} height={3.2} rx={1} fill="#9C88B8" transform="rotate(-14 6 6)" />
+        <rect x={0} y={-10} width={34} height={22} rx={1} fill="#FBF8EF" stroke={INK_SOFT} strokeWidth={0.5} />
+        <path d="M5 -4 q6 -2 12 0 t12 0 M5 1 q6 -2 12 0 t8 0" fill="none" stroke="#8E6FB5" strokeWidth={0.4} />
+        <rect x={6} y={6} width={40} height={3.4} rx={1} fill="#9A86B6" stroke="#4A3E63" strokeWidth={0.3} transform="rotate(-14 6 6)" />
       </g>
-      {/* Romero */}
-      <Rosemary x={124} y={222} length={96} angle={-6} bend={-6} leaves={22} leafLength={13} seed={81} flowers={2} />
+      <Rosemary x={118} y={224} length={98} angle={-6} bend={-6} leaves={26} leafLength={13} seed={81} flowers={2} />
+      <Chamomile x={58} y={214} size={7} seed={91} tilt={0.6} petals={16} />
     </Frame>
   )
 }
 
-/* ─────────────── Inicio: corona de romero con orquídea ─────────────── */
+/* ─────────────── Inicio: corona de romero ─────────────── */
 
 export function WreathIllustration() {
   const cx = 160
-  const cy = 116
+  const cy = 114
   const R = 78
   const sprigs: ReactNode[] = []
   for (let i = 0; i < 3; i++) {
     const a0 = 104 + i * 54
-    const rad = (a0 * Math.PI) / 180
-    sprigs.push(
-      <Rosemary key={`l${i}`} x={r2(cx + R * Math.cos(rad))} y={r2(cy + R * Math.sin(rad))} length={72} angle={a0 + 117} bend={-17} leaves={18} leafLength={14} seed={100 + i} flowers={i === 1 ? 1 : 0} />,
-    )
+    const ra = (a0 * Math.PI) / 180
+    sprigs.push(<Rosemary key={`l${i}`} x={r2(cx + R * Math.cos(ra))} y={r2(cy + R * Math.sin(ra))} length={74} angle={a0 + 117} bend={-17} leaves={24} leafLength={14} seed={100 + i} flowers={i === 1 ? 2 : 1} />)
     const b0 = 76 - i * 54
-    const radB = (b0 * Math.PI) / 180
-    sprigs.push(
-      <Rosemary key={`r${i}`} x={r2(cx + R * Math.cos(radB))} y={r2(cy + R * Math.sin(radB))} length={72} angle={b0 - 117} bend={17} leaves={18} leafLength={14} seed={200 + i} flowers={i === 1 ? 1 : 0} />,
-    )
+    const rb = (b0 * Math.PI) / 180
+    sprigs.push(<Rosemary key={`r${i}`} x={r2(cx + R * Math.cos(rb))} y={r2(cy + R * Math.sin(rb))} length={74} angle={b0 - 117} bend={17} leaves={24} leafLength={14} seed={200 + i} flowers={i === 1 ? 2 : 1} />)
   }
   return (
     <Frame>
-      <Glow x={cx} y={cy} r={110} opacity={0.7} className="halo-respira" />
-      <circle cx={cx} cy={cy} r={50} fill="none" stroke={C.gold} strokeWidth={0.5} opacity={0.6} />
+      <Glow x={cx} y={cy} r={112} opacity={0.7} className="halo-respira" />
+      <Wash x={cx} y={cy} rx={56} ry={56} color="#F3E3B6" opacity={0.35} />
       {sprigs}
       <Sparkle x={cx} y={cy} s={9} className="destello d1" />
-      <Sparkle x={cx - 24} y={cy - 18} s={3} className="destello d2" />
+      <Sparkle x={cx - 26} y={cy - 18} s={3} className="destello d2" />
       <Sparkle x={cx + 22} y={cy + 14} s={3.5} className="destello d3" />
-      <OrchidBud x={cx - 34} y={cy + R + 2} size={0.7} rotate={-60} />
-      <OrchidBud x={cx + 34} y={cy + R + 2} size={0.7} rotate={60} />
-      <Orchid x={cx} y={cy + R} size={0.62} />
+      <Chamomile x={cx - 30} y={cy + R - 4} size={8} rotate={-20} seed={6} tilt={0.7} petals={16} />
+      <Chamomile x={cx + 30} y={cy + R - 4} size={8} rotate={20} seed={8} tilt={0.7} petals={16} />
+      <OrchidSpray points={[[cx - 12, cy + R + 10], [cx, cy + R]]} flowers={[{ at: [cx, cy + R], size: 0.6, seed: 9 }]} />
     </Frame>
   )
 }
@@ -484,25 +546,42 @@ export function BloomIllustration() {
   return (
     <Frame>
       <Glow x={170} y={110} r={140} color="#F6E3B0" opacity={0.6} className="halo-respira" />
-      <path d="M40 226 C44 170 70 110 130 76 C170 54 214 50 250 62" fill="none" stroke="#6F7F66" strokeWidth={1.7} strokeLinecap="round" />
-      <OrchidBud x={250} y={62} size={0.8} rotate={80} />
-      <OrchidBud x={236} y={56} size={0.9} rotate={70} />
-      <Rosemary x={20} y={232} length={130} angle={-34} bend={-14} leaves={30} leafLength={18} seed={301} flowers={2} />
-      <g fill="none" stroke={C.sage} strokeWidth={1.1} strokeLinecap="round">
-        <path d="M246 236 Q242 196 226 160" />
-        <path d="M262 236 Q268 200 284 172" />
-        <path d="M232 236 Q220 214 200 196" />
+      <Wash x={160} y={226} rx={150} ry={12} color="#D9CBA8" opacity={0.4} />
+      <OrchidSpray
+        points={[
+          [44, 230],
+          [46, 170],
+          [74, 112],
+          [130, 74],
+          [196, 58],
+          [252, 64],
+        ]}
+        flowers={[
+          { at: [52, 152], size: 0.6, rotate: -18, seed: 1 },
+          { at: [96, 96], size: 0.66, rotate: -6, seed: 2 },
+          { at: [158, 64], size: 0.6, rotate: 8, seed: 3 },
+        ]}
+        buds={[
+          { at: [222, 58], size: 0.85, rotate: 78 },
+          { at: [252, 64], size: 0.7, rotate: 100 },
+        ]}
+      />
+      <Rosemary x={20} y={234} length={120} angle={-28} bend={-12} leaves={32} leafLength={17} seed={301} flowers={2} />
+      <g fill="none" strokeLinecap="round">
+        {['M246 236 Q242 196 226 158', 'M262 236 Q268 200 284 170', 'M232 236 Q220 214 200 194'].map((d) => (
+          <g key={d}>
+            <path d={d} stroke="#93A985" strokeWidth={1.6} filter="url(#acuarela)" />
+            <path d={d} stroke={INK} strokeWidth={0.45} />
+          </g>
+        ))}
       </g>
       <ChamomileLeaf x={248} y={222} length={30} angle={-128} seed={12} />
       <ChamomileLeaf x={262} y={218} length={28} angle={-52} seed={14} />
-      <Chamomile x={226} y={158} size={15} rotate={-10} seed={21} />
-      <Chamomile x={284} y={170} size={12} rotate={12} seed={23} tilt={0.72} />
-      <Chamomile x={200} y={194} size={11} rotate={-24} seed={25} tilt={0.7} />
-      <Orchid x={80} y={128} size={0.62} rotate={-18} />
-      <Orchid x={136} y={80} size={0.72} rotate={-4} />
-      <Orchid x={196} y={64} size={0.6} rotate={10} />
-      <Sparkle x={120} y={160} s={4} className="destello d2" />
-      <Sparkle x={250} y={110} s={5} className="destello d1" />
+      <Chamomile x={226} y={156} size={15} rotate={-10} seed={21} />
+      <Chamomile x={284} y={168} size={12} rotate={12} seed={23} tilt={0.72} />
+      <Chamomile x={200} y={192} size={11} rotate={-24} seed={25} tilt={0.68} />
+      <Sparkle x={124} y={150} s={4} className="destello d2" />
+      <Sparkle x={262} y={110} s={5} className="destello d1" />
       <Sparkle x={60} y={70} s={3} className="destello d3" />
     </Frame>
   )

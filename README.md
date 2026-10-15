@@ -2,7 +2,8 @@
 
 *Novena botánica para honrar el amor y abrazar la vida*
 
-Para María Eugenia Nova —Meñita—
+Para María Eugenia Nova
+Meñita
 En memoria de Alejandro Franco
 Medellín · 2026
 

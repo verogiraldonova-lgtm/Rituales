@@ -444,16 +444,35 @@ h1:focus-visible {
     0 0 18px rgba(217, 199, 158, 0.8);
 }
 
-.nav-jornadas a.leida::after {
-  content: '';
+.nav-jornadas a {
+  flex-direction: column;
+  gap: 0;
+  min-height: 54px;
+  padding: 0.3rem 0 0.45rem;
+  line-height: 1.05;
+  border-radius: 1.4rem;
+}
+
+.nav-dia {
+  font-family: var(--fuente-ui);
+  font-weight: 500;
+  font-size: 0.56rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--oro-tinta);
+}
+
+.nav-romano {
+  font-size: 1rem;
+}
+
+.nav-flor {
   position: absolute;
-  bottom: 4px;
+  bottom: -7px;
   left: 50%;
-  width: 5px;
-  height: 5px;
-  margin-left: -2.5px;
-  border-radius: 50%;
-  background: var(--salvia);
+  width: 15px;
+  height: 15px;
+  margin-left: -7.5px;
 }
 
 /* ───────────── Paginación ───────────── */
@@ -938,4 +957,37 @@ h1:focus-visible {
 /* El título recibe el foco al cambiar de página solo para lectores de pantalla */
 h1[tabindex='-1']:focus {
   outline: none;
+}
+
+
+/* ───────────── Cursor: chispa cósmica con estela ───────────── */
+
+@media (pointer: fine) {
+  html,
+  a,
+  button,
+  summary,
+  label {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cdefs%3E%3CradialGradient id='g'%3E%3Cstop offset='0' stop-color='%23fffbea'/%3E%3Cstop offset='.35' stop-color='%23ead39a' stop-opacity='.85'/%3E%3Cstop offset='1' stop-color='%23b69b65' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='16' cy='16' r='10' fill='url%28%23g%29'/%3E%3Cpath d='M16 1.5 L16.6 15.4 L30.5 16 L16.6 16.6 L16 30.5 L15.4 16.6 L1.5 16 L15.4 15.4Z' fill='%239c7d3c'/%3E%3Cpath d='M10.5 10.5 L21.5 21.5 M21.5 10.5 L10.5 21.5' stroke='%23b69b65' stroke-width='.55' opacity='.75'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23fffdf4' stroke='%238c6f33' stroke-width='.6'/%3E%3C/svg%3E") 16 16, auto;
+  }
+
+  a,
+  button,
+  summary {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cdefs%3E%3CradialGradient id='g'%3E%3Cstop offset='0' stop-color='%23fffbea'/%3E%3Cstop offset='.35' stop-color='%23ead39a' stop-opacity='.85'/%3E%3Cstop offset='1' stop-color='%23b69b65' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='16' cy='16' r='10' fill='url%28%23g%29'/%3E%3Cpath d='M16 1.5 L16.6 15.4 L30.5 16 L16.6 16.6 L16 30.5 L15.4 16.6 L1.5 16 L15.4 15.4Z' fill='%239c7d3c'/%3E%3Cpath d='M10.5 10.5 L21.5 21.5 M21.5 10.5 L10.5 21.5' stroke='%23b69b65' stroke-width='.55' opacity='.75'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23fffdf4' stroke='%238c6f33' stroke-width='.6'/%3E%3C/svg%3E") 16 16, pointer;
+  }
+
+  textarea,
+  input {
+    cursor: text;
+  }
+}
+
+.estela-cursor {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
 }

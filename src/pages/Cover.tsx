@@ -3,6 +3,7 @@ import { CoverIllustration } from '../illustrations/scenes'
 import { href } from '../routes'
 
 export function Cover() {
+  const [para, nombre, memoria, lugar] = cover.dedication
   return (
     <main id="contenido" className="portada">
       <div className="portada-luz" aria-hidden="true" />
@@ -22,9 +23,10 @@ export function Cover() {
           <span />
         </div>
         <p className="portada-dedicatoria">
-          <span>{cover.dedication[0]}</span>
-          <span>{cover.dedication[1]}</span>
-          <span className="portada-lugar">{cover.dedication[2]}</span>
+          <span>{para}</span>
+          <span className="portada-nombre">{nombre}</span>
+          <span>{memoria}</span>
+          <span className="portada-lugar">{lugar}</span>
         </p>
         <a className="boton-entrar" href={href.inicio}>
           {cover.enter}

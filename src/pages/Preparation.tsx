@@ -12,55 +12,31 @@ import {
 } from '../content/novena'
 import { Blocks, Verse } from '../components/Blocks'
 import { Candle } from '../components/Candle'
-import { Divider, Pager } from '../components/Chrome'
+import { Divider, Fold, Pager } from '../components/Chrome'
+import { Garden } from '../components/Garden'
 import { AltarIllustration, WreathIllustration } from '../illustrations/scenes'
-import { useSanctuary } from '../state/Sanctuary'
-import { dayLabel, dayRoman, href, navEntries } from '../routes'
+import { dayLabel, href } from '../routes'
 import { PageHero } from './PageHero'
 
 export function Inicio() {
-  const { isRead } = useSanctuary()
+  const [salutation, ...letter] = dedication.blocks
+  const greeting = salutation.type === 'p' ? salutation.text : ''
   return (
     <article className="pagina">
-      <PageHero eyebrow="Inicio" title={dedication.title} illustration={<WreathIllustration />} />
+      <PageHero title={greeting} illustration={<WreathIllustration />} className="encabezado-carta" />
       <section className="carta" aria-label={dedication.title}>
-        <Blocks blocks={dedication.blocks} />
+        <Blocks blocks={letter} />
       </section>
       <Divider seed={4} />
-      <section aria-labelledby="antes">
-        <h2 id="antes" className="titulo-seccion">
-          {beforeBeginning.title}
-        </h2>
-        <Blocks blocks={beforeBeginning.blocks} dropCap />
-      </section>
+      <Fold title={beforeBeginning.title} className="plegable-antes">
+        <Blocks blocks={beforeBeginning.blocks} dropCap seed={3} />
+      </Fold>
       <Divider seed={6} />
-      <section aria-labelledby="recorrido" className="recorrido">
-        <h2 id="recorrido" className="titulo-seccion">
-          El recorrido
+      <section aria-labelledby="jardin" className="recorrido">
+        <h2 id="jardin" className="titulo-seccion">
+          El jardín
         </h2>
-        <ol className="recorrido-lista">
-          {navEntries.slice(1).map((entry) => {
-            const n = entry.key.startsWith('dia-') ? Number(entry.key.slice(4)) : null
-            return (
-              <li key={entry.key} className={n ? 'recorrido-dia' : undefined}>
-                <a href={entry.href}>
-                  {n ? (
-                    <>
-                      <span className="recorrido-romano" aria-hidden="true">
-                        {dayRoman(n)}
-                      </span>
-                      <span className="sr-only">{`Día ${dayRoman(n)}: `}</span>
-                      <span>{dayLabel(n).split(' · ')[1]}</span>
-                      {isRead(n) && <span className="marca-leida"> ✓<span className="sr-only">, leída</span></span>}
-                    </>
-                  ) : (
-                    <span>{entry.label}</span>
-                  )}
-                </a>
-              </li>
-            )
-          })}
-        </ol>
+        <Garden />
       </section>
       <Pager next={{ href: href.altar, label: 'Preparación del altar' }} />
     </article>

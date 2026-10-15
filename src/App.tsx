@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react'
 import { days } from './content/novena'
 import { Footer, Header } from './components/Chrome'
+import { CursorTrail } from './components/CursorTrail'
+import { SvgDefs } from './illustrations/SvgDefs'
 import { Cover } from './pages/Cover'
 import { DayPage } from './pages/Day'
 import { DayNine } from './pages/DayNine'
@@ -49,6 +51,8 @@ export function App() {
 
   return (
     <SanctuaryProvider>
+      <SvgDefs />
+      <CursorTrail />
       {route.name === 'portada' ? (
         <Cover />
       ) : (

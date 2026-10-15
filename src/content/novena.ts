@@ -16,7 +16,7 @@ const spoken = (text: string): Block => ({ type: 'spoken', text })
 export const cover = {
   title: 'LA LUZ QUE PERMANECE',
   subtitle: 'Novena botánica para honrar el amor y abrazar la vida',
-  dedication: ['Para María Eugenia Nova —Meñita—', 'En memoria de Alejandro Franco', 'Medellín · 2026'],
+  dedication: ['Para María Eugenia Nova', 'Meñita', 'En memoria de Alejandro Franco', 'Medellín · 2026'],
   enter: 'Entrar al jardín',
   tagline: 'Nueve encuentros con la memoria, la gratitud y la luz',
 }

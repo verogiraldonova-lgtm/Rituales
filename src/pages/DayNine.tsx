@@ -1,42 +1,59 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { closingPrayer, finalDay } from '../content/novena'
 import { Blocks, Verse } from '../components/Blocks'
 import { Candle } from '../components/Candle'
 import { DayNav, Disclosure, Divider, Pager, ReadToggle } from '../components/Chrome'
-import { FullMoon, Glow, Rosemary, SmallFlame } from '../illustrations/botanicals'
-import { C } from '../illustrations/palette'
+import { MomentArt } from '../illustrations/emblems'
 import { Luna } from '../illustrations/scenes'
 import { dayLabel, href } from '../routes'
 import { OpeningInvitation } from './Day'
 import { PageHero } from './PageHero'
 
-function MomentIcon({ kind }: { kind: 'ofrenda' | 'fuego' | 'luna' }) {
+type MomentKey = 'ofrenda' | 'fuego' | 'luna'
+
+/** Los tres elementos de la transformación: cada uno se abre al tocarlo. */
+function Transformation() {
+  const d = finalDay
+  const [open, setOpen] = useState<MomentKey | null>(null)
+  const moments: { key: MomentKey; section: (typeof d.moments)['ofrenda'] }[] = [
+    { key: 'ofrenda', section: d.moments.ofrenda },
+    { key: 'fuego', section: d.moments.fuegoAgua },
+    { key: 'luna', section: d.moments.luna },
+  ]
   return (
-    <svg viewBox="0 0 120 80" className="momento-icono" aria-hidden="true" focusable="false">
-      {kind === 'ofrenda' && (
-        <>
-          <Glow x={60} y={42} r={40} opacity={0.5} />
-          <Rosemary x={14} y={52} length={92} angle={-12} bend={-6} leaves={22} leafLength={13} seed={91} />
-          <rect x={48} y={34} width={22} height={16} rx={2} fill={C.orchid} stroke={C.sandDeep} strokeWidth={0.8} transform="rotate(-12 59 42)" />
-          <path d="M50 44 l20 -4" stroke="#9C88B8" strokeWidth={0.7} transform="rotate(-12 59 42)" />
-        </>
-      )}
-      {kind === 'fuego' && (
-        <>
-          <Glow x={60} y={36} r={40} color={C.flame} opacity={0.45} />
-          <SmallFlame x={60} y={44} s={0.85} />
-          <path d="M30 56 Q32 74 60 75 Q88 74 90 56Z" fill="#F1EADB" stroke={C.goldInk} strokeWidth={0.8} />
-          <ellipse cx={60} cy={56} rx={30} ry={6} fill={C.water} stroke={C.goldInk} strokeWidth={0.8} />
-          <ellipse cx={60} cy={56} rx={12} ry={2.4} fill="none" stroke="#FFFFFF" strokeWidth={0.6} />
-        </>
-      )}
-      {kind === 'luna' && (
-        <>
-          <Glow x={60} y={40} r={42} color="#F1E3BC" opacity={0.9} />
-          <FullMoon x={60} y={40} r={22} />
-        </>
-      )}
-    </svg>
+    <section className="transformacion" aria-labelledby="ix-transformacion">
+      <h2 id="ix-transformacion" className="titulo-seccion titulo-transformacion">
+        {d.gestureTitle}
+      </h2>
+      <p className="nota-discreta">Toca cada elemento para abrir su gesto.</p>
+      <div className="elementos">
+        {moments.map(({ key, section }) => (
+          <button
+            key={key}
+            type="button"
+            className={`elemento elemento-${key}`}
+            aria-expanded={open === key}
+            aria-controls={`ix-${key}`}
+            onClick={() => setOpen(open === key ? null : key)}
+          >
+            <MomentArt kind={key} />
+            <span className="elemento-titulo">{section.title}</span>
+          </button>
+        ))}
+      </div>
+      {moments.map(({ key, section }) => (
+        <section
+          key={key}
+          id={`ix-${key}`}
+          className={`momento-lunar momento-${key}`}
+          hidden={open !== key}
+          aria-labelledby={`ix-${key}-titulo`}
+        >
+          <h3 id={`ix-${key}-titulo`}>{section.title}</h3>
+          <Blocks blocks={section.blocks} headingLevel="h4" />
+        </section>
+      ))}
+    </section>
   )
 }
 
@@ -97,7 +114,7 @@ export function DayNine() {
         <h2 id="ix-lectura" className="titulo-seccion">
           {d.reading.title}
         </h2>
-        <Blocks blocks={d.reading.blocks} dropCap />
+        <Blocks blocks={d.reading.blocks} dropCap seed={45} />
       </section>
 
       <Divider seed={33} />
@@ -111,29 +128,7 @@ export function DayNine() {
 
       <Divider seed={35} />
 
-      <section className="transformacion" aria-labelledby="ix-transformacion">
-        <h2 id="ix-transformacion" className="titulo-seccion titulo-transformacion">
-          {d.gestureTitle}
-        </h2>
-
-        <section className="momento-lunar momento-ofrenda" aria-labelledby="ix-ofrenda">
-          <MomentIcon kind="ofrenda" />
-          <h3 id="ix-ofrenda">{d.moments.ofrenda.title}</h3>
-          <Blocks blocks={d.moments.ofrenda.blocks} />
-        </section>
-
-        <section className="momento-lunar momento-fuego" aria-labelledby="ix-fuego">
-          <MomentIcon kind="fuego" />
-          <h3 id="ix-fuego">{d.moments.fuegoAgua.title}</h3>
-          <Blocks blocks={d.moments.fuegoAgua.blocks} headingLevel="h4" />
-        </section>
-
-        <section className="momento-lunar momento-luna" aria-labelledby="ix-luna">
-          <MomentIcon kind="luna" />
-          <h3 id="ix-luna">{d.moments.luna.title}</h3>
-          <Blocks blocks={d.moments.luna.blocks} />
-        </section>
-      </section>
+      <Transformation />
 
       <Divider seed={37} />
 

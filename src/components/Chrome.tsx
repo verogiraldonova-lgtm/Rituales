@@ -6,20 +6,11 @@ import { useEffect, useRef, type ReactNode } from 'react'
 import { cover } from '../content/novena'
 import { useSanctuary } from '../state/Sanctuary'
 import { dayRoman, href, navEntries, type NavEntry } from '../routes'
-import { MoonPhase, SprigDivider } from '../illustrations/botanicals'
-import { C } from '../illustrations/palette'
+import { SprigDivider, TinyFlower } from '../illustrations/botanicals'
+import { HeaderEmblem } from '../illustrations/emblems'
 
 export function Emblem() {
-  return (
-    <svg viewBox="0 0 40 40" width="34" height="34" aria-hidden="true" focusable="false" className="emblema">
-      <circle cx="20" cy="20" r="18" fill="none" stroke={C.gold} strokeWidth="0.8" />
-      <MoonPhase x={20} y={17} r={8} k={1} lit="#F4EBD3" outline={C.gold} />
-      <path d="M9 31 Q20 25 31 31" fill="none" stroke={C.forest} strokeWidth="1" />
-      {[12, 16, 20, 24, 28].map((x, i) => (
-        <path key={x} d={`M${x} ${29.4 - (i === 2 ? 1.2 : 0)} l${i < 2 ? -2 : i > 2 ? 2 : 0} -3.4`} stroke={C.sage} strokeWidth="1.1" strokeLinecap="round" />
-      ))}
-    </svg>
-  )
+  return <HeaderEmblem />
 }
 
 export function FontControls() {
@@ -112,7 +103,9 @@ function MenuLink({ entry, currentKey, onNavigate }: { entry: NavEntry; currentK
         )}
         {read && (
           <span className="marca-leida" title="Leída">
-            <span aria-hidden="true">✓</span>
+            <svg viewBox="-7 -7 14 14" width="20" height="20" aria-hidden="true" focusable="false">
+              <TinyFlower r={6} />
+            </svg>
             <span className="sr-only">, leída</span>
           </span>
         )}
@@ -180,13 +173,50 @@ export function DayNav({ current }: { current: number }) {
                 className={read ? 'leida' : undefined}
                 aria-label={`Día ${dayRoman(n)}${read ? ', leída' : ''}`}
               >
-                {dayRoman(n)}
+                <span className="nav-dia" aria-hidden="true">
+                  Día
+                </span>
+                <span className="nav-romano" aria-hidden="true">
+                  {dayRoman(n)}
+                </span>
+                {read && (
+                  <svg className="nav-flor" viewBox="-7 -7 14 14" aria-hidden="true" focusable="false">
+                    <TinyFlower r={6} />
+                  </svg>
+                )}
               </a>
             </li>
           )
         })}
       </ol>
     </nav>
+  )
+}
+
+/** Sección plegable con título visible: se abre al tocarla. */
+export function Fold({
+  title,
+  eyebrow,
+  headingLevel = 'h2',
+  className = '',
+  children,
+}: {
+  title: string
+  eyebrow?: string
+  headingLevel?: 'h2' | 'h3'
+  className?: string
+  children: ReactNode
+}) {
+  const Heading = headingLevel
+  return (
+    <details className={`plegable ${className}`}>
+      <summary>
+        {eyebrow && <span className="plegable-antetitulo">{eyebrow}</span>}
+        <Heading className="plegable-titulo">{title}</Heading>
+        <span className="plegable-accion" aria-hidden="true" />
+      </summary>
+      <div className="plegable-contenido">{children}</div>
+    </details>
   )
 }
 
@@ -251,7 +281,11 @@ export function ReadToggle({ day }: { day: number }) {
     <div className="marcar-leida">
       <button type="button" aria-pressed={read} onClick={() => toggleRead(day)}>
         <span className="casilla" aria-hidden="true">
-          {read ? '✓' : ''}
+          {read && (
+            <svg viewBox="-7 -7 14 14" width="22" height="22" focusable="false">
+              <TinyFlower r={6} />
+            </svg>
+          )}
         </span>
         <span>{read ? 'Jornada leída' : 'Marcar esta jornada como leída'}</span>
       </button>
