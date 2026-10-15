@@ -4,6 +4,7 @@
  */
 import type { ReactNode } from 'react'
 import { C, r2 } from './palette'
+import { stationImages } from './paintings'
 import {
   AmethystCluster,
   Chamomile,
@@ -314,6 +315,10 @@ function StationArt({ kind }: { kind: StationKind }): ReactNode {
 }
 
 export function StationIcon({ kind }: { kind: StationKind }) {
+  const image = stationImages[kind]
+  if (image) {
+    return <img className="estacion-pintura" src={image} width={240} height={240} alt="" loading="lazy" decoding="async" />
+  }
   return (
     <svg viewBox="-32 -32 64 64" className="estacion-icono" aria-hidden="true" focusable="false">
       <GardenBed seed={kind.length} />

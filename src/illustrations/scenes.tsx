@@ -5,6 +5,8 @@
 import type { ReactNode } from 'react'
 import type { IllustrationKey } from '../content/types'
 import { C, r2, seeded } from './palette'
+import type { PaintingKey } from './paintings'
+import { Painting } from '../components/Painting'
 import {
   AerialRoot,
   AmethystCluster,
@@ -771,7 +773,17 @@ const SCENES: Record<IllustrationKey, () => ReactNode> = {
   luna: () => <Luna />,
 }
 
+/** Días que ya tienen lámina pintada. */
+const PAINTED: Partial<Record<IllustrationKey, PaintingKey>> = {
+  umbral: 'dia-1',
+  memoria: 'dia-2',
+  manos: 'dia-3',
+  casa: 'dia-4',
+}
+
 export function DayIllustration({ name }: { name: IllustrationKey }) {
+  const painted = PAINTED[name]
+  if (painted) return <Painting name={painted} eager />
   const Scene = SCENES[name]
   return <Scene />
 }

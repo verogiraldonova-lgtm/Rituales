@@ -2,7 +2,7 @@ import { afterInvocation, invocation } from '../content/novena'
 import { Blocks, Verse } from '../components/Blocks'
 import { Pager } from '../components/Chrome'
 import { Glow, MoonPhase } from '../illustrations/botanicals'
-import { InvocationCard } from '../illustrations/emblems'
+import { Painting } from '../components/Painting'
 import { C } from '../illustrations/palette'
 import { useSanctuary } from '../state/Sanctuary'
 import { dayLabel, dayRoman, href } from '../routes'
@@ -45,7 +45,7 @@ export function Invocacion() {
         <span className="esquina esquina-ii" aria-hidden="true" />
         <span className="esquina esquina-id" aria-hidden="true" />
         <header className="encabezado folio-encabezado">
-          <InvocationCard />
+          <Painting name="invocacion" eager />
           <h1 id="titulo-pagina" tabIndex={-1}>
             {invocation.title}
           </h1>
