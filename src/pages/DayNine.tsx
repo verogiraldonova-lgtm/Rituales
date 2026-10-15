@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import { closingPrayer, finalDay } from '../content/novena'
 import { Blocks, Verse } from '../components/Blocks'
 import { Candle } from '../components/Candle'
-import { DayNav, Disclosure, Divider, Pager, ReadToggle } from '../components/Chrome'
+import { DayNav, Disclosure, Divider, Fold, Pager, ReadToggle } from '../components/Chrome'
 import { MomentArt } from '../illustrations/emblems'
-import { Luna } from '../illustrations/scenes'
+import { Luna, OrchidDivider } from '../illustrations/scenes'
 import { dayLabel, href } from '../routes'
 import { OpeningInvitation } from './Day'
 import { PageHero } from './PageHero'
@@ -110,14 +110,11 @@ export function DayNine() {
 
       <Divider seed={31} />
 
-      <section className="momento lectura" aria-labelledby="ix-lectura">
-        <h2 id="ix-lectura" className="titulo-seccion">
-          {d.reading.title}
-        </h2>
+      <Fold title={d.reading.title} split className="plegable-lectura">
         <Blocks blocks={d.reading.blocks} dropCap seed={45} />
-      </section>
+      </Fold>
 
-      <Divider seed={33} />
+      <OrchidDivider seed={9} />
 
       <section className="momento oracion bendicion" aria-labelledby="ix-bendicion">
         <h2 id="ix-bendicion" className="verso-titulo">

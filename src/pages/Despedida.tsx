@@ -27,7 +27,7 @@ export function Despedida() {
       </p>
       <p className="accion-central">
         <a className="boton-suave" href={href.jardin}>
-          Volver al jardín
+          Volver a la novena
         </a>
       </p>
     </article>

@@ -1333,3 +1333,72 @@
 .despedida .portada-dedicatoria {
   margin-bottom: var(--espacio-m);
 }
+
+/* ───────────── Títulos de plegables en dos líneas ───────────── */
+
+.plegable-lead {
+  display: block;
+  font-size: 1.95rem;
+  line-height: 1.1;
+}
+
+.plegable-resto {
+  display: block;
+  margin-top: 0.15rem;
+  font-style: italic;
+  font-size: 1.35rem;
+  line-height: 1.25;
+  color: var(--tinta-suave);
+}
+
+.plegable summary:hover .plegable-resto {
+  color: var(--oro-tinta);
+}
+
+.plegables-jornada .plegable + .separador-orquidea {
+  margin-top: 0.25rem;
+}
+
+.separador-orquidea {
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem auto 1rem;
+}
+
+.separador-orquidea svg {
+  width: min(17rem, 85%);
+  height: auto;
+  overflow: visible;
+}
+
+.separador-orquidea + .plegable {
+  border-top: 1px solid var(--linea);
+  margin-top: 0;
+}
+
+/* ───────────── Lámina pintada del altar ───────────── */
+
+.altar-imagen {
+  margin: 0 auto 1.5rem;
+  max-width: 40rem;
+}
+
+.altar-imagen img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  box-shadow:
+    0 0 0 1px var(--linea-suave),
+    0 14px 40px rgba(182, 155, 101, 0.28);
+  -webkit-mask-image: radial-gradient(ellipse 75% 75% at 50% 50%, #000 70%, transparent 100%);
+  mask-image: radial-gradient(ellipse 75% 75% at 50% 50%, #000 70%, transparent 100%);
+}
+
+.encabezado-altar .encabezado-lamina {
+  max-width: 40rem;
+}
+
+.encabezado-altar .altar-imagen {
+  margin-bottom: 0.5rem;
+}

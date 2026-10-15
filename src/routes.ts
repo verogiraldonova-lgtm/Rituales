@@ -94,7 +94,7 @@ export interface NavEntry {
 /** Orden completo del recorrido, tal como aparece en el menú. */
 export const navEntries: NavEntry[] = [
   { label: 'Inicio', href: href.inicio, key: 'inicio' },
-  { label: 'El jardín', href: href.jardin, key: 'jardin' },
+  { label: 'Novena', href: href.jardin, key: 'jardin' },
   { label: 'Preparación del altar', href: href.altar, key: 'altar' },
   { label: 'Oración de apertura', href: href.apertura, key: 'apertura' },
   { label: 'Invocación de las nueve luces', href: href.invocacion, key: 'invocacion' },

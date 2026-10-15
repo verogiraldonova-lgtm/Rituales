@@ -4,7 +4,7 @@ import type { Day as DayContent } from '../content/types'
 import { Blocks, Verse } from '../components/Blocks'
 import { Candle } from '../components/Candle'
 import { DayNav, Disclosure, Divider, Fold, Pager, ReadToggle } from '../components/Chrome'
-import { DayIllustration } from '../illustrations/scenes'
+import { DayIllustration, OrchidDivider } from '../illustrations/scenes'
 import { dayLabel, href } from '../routes'
 import { PageHero } from './PageHero'
 
@@ -61,20 +61,15 @@ export function DayPage({ day }: { day: DayContent }) {
 
       <Divider seed={n * 3} />
 
-      <section className="momento lectura" aria-labelledby={`lectura-${n}`}>
-        <h2 id={`lectura-${n}`} className="etiqueta">
-          Lectura
-        </h2>
-        <Blocks blocks={day.reading} dropCap seed={n * 5} />
-      </section>
-
-      <Divider seed={n * 3 + 1} />
-
       <div className="plegables-jornada">
-        <Fold eyebrow="Oración" title={day.prayer.title} className="plegable-oracion">
+        <Fold title={`Lectura del día ${day.roman}`} split className="plegable-lectura">
+          <Blocks blocks={day.reading} dropCap seed={n * 5} />
+        </Fold>
+        <Fold title={day.prayer.title} split className="plegable-oracion">
           <Verse verse={day.prayer} showTitle={false} className="verso-principal" />
         </Fold>
-        <Fold eyebrow="Gesto" title={day.gesture.title} className="plegable-gesto">
+        <OrchidDivider seed={n} />
+        <Fold title={day.gesture.title} split className="plegable-gesto">
           <Blocks blocks={day.gesture.blocks} />
         </Fold>
       </div>

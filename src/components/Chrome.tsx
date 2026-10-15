@@ -205,16 +205,22 @@ export function Fold({
   eyebrow,
   headingLevel = 'h2',
   className = '',
+  split = false,
   children,
 }: {
   title: string
   eyebrow?: string
   headingLevel?: 'h2' | 'h3'
   className?: string
+  /** Primera palabra en una línea y el resto debajo («Oración» / «de mi propia luz»). */
+  split?: boolean
   children: ReactNode
 }) {
   const Heading = headingLevel
   const ref = useRef<HTMLDetailsElement>(null)
+  const cut = title.indexOf(' ')
+  const lead = split && cut > 0 ? title.slice(0, cut) : null
+  const rest = lead ? title.slice(cut + 1) : title
   const close = () => {
     const el = ref.current
     if (!el) return
@@ -228,7 +234,15 @@ export function Fold({
     <details ref={ref} className={`plegable ${className}`}>
       <summary>
         {eyebrow && <span className="plegable-antetitulo">{eyebrow}</span>}
-        <Heading className="plegable-titulo">{title}</Heading>
+        <Heading className="plegable-titulo">
+          {lead ? (
+            <>
+              <span className="plegable-lead">{lead}</span> <span className="plegable-resto">{rest}</span>
+            </>
+          ) : (
+            title
+          )}
+        </Heading>
         <span className="plegable-accion" aria-hidden="true" />
       </summary>
       <div className="plegable-contenido">

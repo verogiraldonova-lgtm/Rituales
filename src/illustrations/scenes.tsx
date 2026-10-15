@@ -54,6 +54,136 @@ function Rays({ x, y, from, to, count, start, end, opacity = 0.4 }: { x: number;
   )
 }
 
+/* ─────────────── Fondo pintado (estilo de la lámina del altar) ─────────────── */
+
+/** Estrella fina de cuatro puntas en oro. */
+function GoldStar({ x, y, s = 4 }: { x: number; y: number; s?: number }) {
+  return (
+    <path
+      transform={`translate(${x} ${y})`}
+      d={`M0 ${-s} L${s * 0.12} ${-s * 0.12} L${s} 0 L${s * 0.12} ${s * 0.12} L0 ${s} L${-s * 0.12} ${s * 0.12} L${-s} 0 L${-s * 0.12} ${-s * 0.12}Z`}
+      fill="#BFA061"
+      opacity={0.85}
+    />
+  )
+}
+
+/** Ramita de filigrana dorada. */
+function GoldSprig({ x, y, angle = 0, size = 1 }: { x: number; y: number; angle?: number; size?: number }) {
+  return (
+    <g transform={`translate(${x} ${y}) rotate(${angle}) scale(${size})`} fill="none" stroke="#C3A566" strokeWidth={0.55} strokeLinecap="round" opacity={0.75}>
+      <path d="M0 0 Q10 -4 22 -2" />
+      {[4, 9, 14, 19].map((t, i) => (
+        <g key={t}>
+          <path d={`M${t} ${-1.5 - i * 0.2} q2 -4 5 -4.5 q-1 3.5 -5 4.5`} fill="#D6BC85" fillOpacity={0.5} />
+          <path d={`M${t} ${-1 - i * 0.2} q2.5 3 5.5 2.6 q-2 -2.8 -5.5 -2.6`} fill="#D6BC85" fillOpacity={0.5} />
+        </g>
+      ))}
+    </g>
+  )
+}
+
+/**
+ * Fondo común de las láminas: pared pintada con manchas, haces de luz
+ * diagonales, arco celeste con media luna y estrellas, y un mantel bordado.
+ */
+export function Backdrop({ cloth = true, night = false }: { cloth?: boolean; night?: boolean }) {
+  const wall = useSvgId('muro')
+  const fade = useSvgId('vineta')
+  const mask = useSvgId('mascara')
+  const rnd = seeded(21)
+  return (
+    <g>
+      <defs>
+        <linearGradient id={wall} x1="0" y1="0" x2="0.35" y2="1">
+          <stop offset="0" stopColor={night ? '#EFE6D3' : '#F7EFDD'} />
+          <stop offset="1" stopColor={night ? '#E2D6BE' : '#EADDBF'} />
+        </linearGradient>
+        <radialGradient id={fade} cx="0.5" cy="0.48" r="0.62">
+          <stop offset="0.62" stopColor="#FFFFFF" />
+          <stop offset="1" stopColor="#000000" />
+        </radialGradient>
+        <mask id={mask}>
+          <rect x={0} y={0} width={320} height={240} fill={`url(#${fade})`} />
+        </mask>
+      </defs>
+      <g mask={`url(#${mask})`}>
+        <rect x={0} y={0} width={320} height={240} fill={`url(#${wall})`} filter="url(#acuarela)" />
+        <g fill="#E2D0AA" opacity={0.3} filter="url(#acuarela)">
+          {Array.from({ length: 9 }, (_, i) => (
+            <ellipse key={i} cx={r2(rnd() * 320)} cy={r2(rnd() * 180)} rx={r2(14 + rnd() * 30)} ry={r2(8 + rnd() * 18)} />
+          ))}
+        </g>
+        <g fill="#FFFDF6" opacity={night ? 0.18 : 0.32} filter="url(#acuarela)">
+          <polygon points="236,0 266,0 156,240 118,240" />
+          <polygon points="282,0 300,0 204,240 180,240" />
+          <polygon points="306,0 318,0 236,240 222,240" />
+        </g>
+        <g fill="none" stroke="#C3A566" strokeLinecap="round">
+          <path d="M40 158 A120 120 0 0 1 280 158" strokeWidth={0.6} opacity={0.6} />
+          <path d="M58 168 A104 104 0 0 1 262 168" strokeWidth={0.35} opacity={0.4} strokeDasharray="1 3" />
+        </g>
+        <path d="M160 12 a8.5 8.5 0 1 0 7.5 14 a6.6 6.6 0 1 1 -7.5 -14z" fill="#C9A85E" opacity={0.9} />
+        <GoldStar x={160} y={44} s={5} />
+        <GoldStar x={64} y={62} s={3} />
+        <GoldStar x={254} y={70} s={3.4} />
+        <GoldStar x={40} y={120} s={2.4} />
+        <GoldStar x={284} y={128} s={2.6} />
+        <GoldSprig x={14} y={110} angle={-70} size={1.2} />
+        <GoldSprig x={306} y={104} angle={-110} size={1.2} />
+        {cloth && (
+          <g>
+            <path d="M-4 196 Q60 186 120 192 T240 190 T324 194 L324 244 L-4 244Z" fill="#FAF6EC" filter="url(#acuarela)" />
+            <path d="M-4 196 Q60 186 120 192 T240 190 T324 194" fill="none" stroke="#CDBF9F" strokeWidth={0.6} />
+            <g fill="none" stroke="#D8CBAE" strokeWidth={0.5} opacity={0.8}>
+              <path d="M40 194 Q46 214 38 240" />
+              <path d="M118 194 Q112 216 122 240" />
+              <path d="M210 192 Q218 214 208 240" />
+              <path d="M280 194 Q274 216 286 240" />
+            </g>
+            <GoldSprig x={18} y={228} angle={-14} size={0.9} />
+            <GoldSprig x={150} y={232} angle={-6} size={0.8} />
+            <GoldSprig x={262} y={226} angle={-20} size={0.9} />
+          </g>
+        )}
+      </g>
+    </g>
+  )
+}
+
+/** Orquídea horizontal que separa la oración del gesto. */
+export function OrchidDivider({ seed = 1 }: { seed?: number }) {
+  return (
+    <div className="separador-orquidea" role="presentation">
+      <svg viewBox="0 0 280 80" aria-hidden="true" focusable="false">
+        <line x1={6} y1={52} x2={60} y2={52} stroke={C.gold} strokeWidth={0.6} opacity={0.7} />
+        <line x1={222} y1={52} x2={274} y2={52} stroke={C.gold} strokeWidth={0.6} opacity={0.7} />
+        <circle cx={6} cy={52} r={1.6} fill={C.gold} />
+        <circle cx={274} cy={52} r={1.6} fill={C.gold} />
+        <OrchidSpray
+          points={[
+            [62, 56],
+            [100, 46],
+            [150, 40],
+            [196, 44],
+            [222, 54],
+          ]}
+          flowers={[
+            { at: [104, 44], size: 0.42, rotate: -8, seed: seed + 1 },
+            { at: [150, 38], size: 0.48, rotate: 4, seed: seed + 2 },
+          ]}
+          buds={[
+            { at: [196, 44], size: 0.65, rotate: 96 },
+            { at: [214, 50], size: 0.5, rotate: 110 },
+          ]}
+        />
+        <Leaf x={64} y={58} length={16} width={5} angle={-200} tone={1} seed={seed} />
+        <Leaf x={66} y={58} length={13} width={4.4} angle={-150} tone={3} seed={seed + 4} />
+      </svg>
+    </div>
+  )
+}
+
 /* ─────────────── Portada: la pirámide en el jardín ─────────────── */
 
 export function CoverIllustration() {
@@ -113,6 +243,7 @@ function Umbral() {
   const spring = 104
   return (
     <Frame>
+      <Backdrop cloth={false} />
       <defs>
         <radialGradient id={id} cx="0.5" cy="0.65" r="0.7">
           <stop offset="0" stopColor="#FFFAEA" />
@@ -183,6 +314,7 @@ function Memoria() {
   }
   return (
     <Frame>
+      <Backdrop  />
       <Glow x={160} y={120} r={130} opacity={0.45} />
       <Wash x={160} y={132} rx={120} ry={70} color="#E3D7BB" opacity={0.3} />
       <g transform="rotate(-6 160 120)">
@@ -220,6 +352,7 @@ function Memoria() {
 function Manos() {
   return (
     <Frame>
+      <Backdrop cloth={false} />
       <Glow x={160} y={128} r={128} color={C.amethystLight} opacity={0.55} className="halo-respira" />
       <Glow x={160} y={140} r={62} color="#FFF5DE" opacity={0.85} />
       <Rays x={160} y={130} from={40} to={96} count={11} start={-160} end={-20} opacity={0.35} />
@@ -243,6 +376,7 @@ function Manos() {
 function Casa() {
   return (
     <Frame>
+      <Backdrop cloth={false} />
       <Glow x={226} y={70} r={110} opacity={0.5} />
       {/* Ventana con cortina */}
       <path d="M196 122 L196 52 A34 34 0 0 1 264 52 L264 122Z" fill="#FFF8E8" />
@@ -274,6 +408,7 @@ function Raices() {
   const rnd = seeded(5)
   return (
     <Frame>
+      <Backdrop cloth={false} />
       <defs>
         <radialGradient id={id} cx="0.5" cy="0" r="0.8">
           <stop offset="0" stopColor="#CDBC97" stopOpacity={0.65} />
@@ -329,6 +464,7 @@ function Teacup({ x, y }: { x: number; y: number }) {
 function Alegria() {
   return (
     <Frame>
+      <Backdrop cloth={false} />
       <Glow x={160} y={170} r={160} color="#F6DFA6" opacity={0.6} className="halo-respira" />
       <Rays x={160} y={170} from={46} to={142} count={15} start={-174} end={-6} opacity={0.4} />
       <path d="M116 170 A44 44 0 0 1 204 170Z" fill="#FBE3A6" filter="url(#acuarela)" />
@@ -363,6 +499,7 @@ function Alegria() {
 function Mujer() {
   return (
     <Frame>
+      <Backdrop  />
       <Glow x={160} y={126} r={140} color={C.amethystLight} opacity={0.6} className="halo-respira" />
       <Glow x={160} y={122} r={72} color="#FFF4DA" opacity={0.95} />
       {[46, 64, 84].map((r, i) => (
@@ -396,6 +533,7 @@ function Mujer() {
 function Jardin() {
   return (
     <Frame>
+      <Backdrop  />
       <Glow x={184} y={88} r={130} opacity={0.5} />
       <Wash x={160} y={232} rx={90} ry={8} color="#D9CBA8" opacity={0.5} />
       {/* Maceta */}
@@ -442,6 +580,7 @@ function Jardin() {
 export function Luna({ className = '' }: { className?: string }) {
   return (
     <Frame className={className}>
+      <Backdrop night />
       <g className="luna-resplandor">
         <Glow x={160} y={76} r={150} color="#F1E3BC" opacity={0.9} />
       </g>

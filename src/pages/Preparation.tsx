@@ -16,7 +16,8 @@ import { Divider, Fold, Pager } from '../components/Chrome'
 import { Garden } from '../components/Garden'
 import { TinyFlower } from '../illustrations/botanicals'
 import { useSanctuary } from '../state/Sanctuary'
-import { AltarIllustration, WreathIllustration } from '../illustrations/scenes'
+import { WreathIllustration } from '../illustrations/scenes'
+import { AltarImage } from '../components/AltarImage'
 import { dayLabel, href } from '../routes'
 import { PageHero } from './PageHero'
 
@@ -33,10 +34,8 @@ export function Inicio() {
       <Fold title={beforeBeginning.title} className="plegable-antes">
         <Blocks blocks={beforeBeginning.blocks} dropCap seed={3} />
       </Fold>
-      <Fold title="Preparación del altar" eyebrow={altar.title} className="plegable-altar">
-        <div className="altar-lamina">
-          <AltarIllustration />
-        </div>
+      <Fold title="Preparación del altar" className="plegable-altar">
+        <AltarImage />
         <Blocks blocks={altar.blocks} />
       </Fold>
       <p className="accion-comenzar">
@@ -52,7 +51,7 @@ export function Jardin() {
   const { allRead } = useSanctuary()
   return (
     <article className="pagina pagina-jardin">
-      <PageHero eyebrow="La novena" title="El jardín" />
+      <PageHero title="Novena" />
       <p className="nota-discreta jardin-nota">
         Toca cada espacio para entrar. La flor
         <svg viewBox="-7 -7 14 14" width="18" height="18" aria-hidden="true" focusable="false" className="nota-flor">
@@ -76,7 +75,7 @@ export function Jardin() {
 export function Altar() {
   return (
     <article className="pagina">
-      <PageHero eyebrow="Preparación del altar" title={altar.title} illustration={<AltarIllustration />} />
+      <PageHero title="Preparación del altar" illustration={<AltarImage />} className="encabezado-altar" />
       <section aria-label={altar.title}>
         <Blocks blocks={altar.blocks} />
       </section>
